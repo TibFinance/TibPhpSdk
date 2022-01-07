@@ -81,23 +81,23 @@ We ca have as many ways to handle the response here be now we will focus on how 
     }
     ```
 - This is a real life Example of a session token refresh after the session token Expires;
-    ```
-        function ResponseHandler($responseObj)
-        {
-            if (isset($responseObj->HasError)) {
-                if ($responseObj->HasError) {
-                    var_dump_pre($responseObj->Messages);
-                    if( $responseObj->Messages == "Need an authenticated user to perform this action" ){
-                        header('location: ./Calls.php?action=CreateCustomer');
-                    }
-                } else {
-                    var_dump_pre($responseObj);
+```
+    function ResponseHandler($responseObj)
+    {
+        if (isset($responseObj->HasError)) {
+            if ($responseObj->HasError) {
+                var_dump_pre($responseObj->Messages);
+                if( $responseObj->Messages == "Need an authenticated user to perform this action" ){
+                    header('location: ./Calls.php?action=CreateCustomer');
                 }
             } else {
-                var_dump_pre("..");
+                var_dump_pre($responseObj);
             }
+        } else {
+            var_dump_pre("..");
         }
-    ```
+    }
+```
 this is a way to handle a response , you can choose your own way to handle the response you get. 
 just keep in mind that every response contains the said properties 
  
