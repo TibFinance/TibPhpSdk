@@ -68,9 +68,8 @@ We ca have as many ways to handle the response here be now we will focus on how 
     * "Messages" the message that somes with the Response (eeven if no error is presented).
 
 - so basicaly you can do something like : 
-    ```
+```
     function ResponseHandler($responseObejct){
-
         if(isset($responseObejct->HasError)){
             if($responseObejct->HasError){
                 // Do Something in Case of the Response Object HasError returns True 
@@ -79,7 +78,7 @@ We ca have as many ways to handle the response here be now we will focus on how 
             }
         }
     }
-    ```
+```
 - This is a real life Example of a session token refresh after the session token Expires;
 ```
     function ResponseHandler($responseObj)
