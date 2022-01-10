@@ -61,7 +61,7 @@ object(stdClass)#43 (7) {
 }
 
 ```
-We ca have as many ways to handle the response here be now we will focus on how to handle errors here 
+We can have many ways to handle the response, now we will focus on how to handle errors here:
 - the most important properties of the object when it comes to Error Handling are :
     * "HasError" which is a boolean that tells you either the response has an error or not 
     * "Errors" which is an array of Errors
@@ -74,7 +74,7 @@ We ca have as many ways to handle the response here be now we will focus on how 
             if($responseObejct->HasError){
                 // Do Something in Case of the Response Object HasError returns True 
             }else{
-                // Do something in the Call of a Successfull operation.
+                // Do something in the Case of the Response Object HasError returns false.
             }
         }
     }
