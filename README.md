@@ -10,8 +10,8 @@ here you'll find CodeSamples to how to use the Tib Php SDk
 ## Environments
 
 Calls to the service are done via a WEB service. There are two URLs for the service:
-    * Production: https://portal.tib.finance    
-    * Development: http://sandboxportal.tib.finance
+* Production: https://portal.tib.finance    
+* Development: http://sandboxportal.tib.finance
 
 
 ## Set Up 
