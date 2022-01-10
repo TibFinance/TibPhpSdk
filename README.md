@@ -5,7 +5,14 @@ This is a technical document on how to use the Tib php SDK.
 
 ## Overview 
 
-here you'll find CodeSample to how to use the Tib Php SDk 
+here you'll find CodeSamples to how to use the Tib Php SDk 
+
+## Environments
+
+Calls to the service are done via a WEB service. There are two URLs for the service:
+    * Production: https://portal.tib.finance    
+    * Development: http://sandboxportal.tib.finance
+
 
 ## Set Up 
 ` Before you using the SDK you need to set the api url up and get a session id. `
@@ -15,6 +22,8 @@ Initiat the Server Caller Class
 ``` $serverCaller = new ServerCaller(); ```
 
 Then set the api Url 
+
+*the link can be either the Sandbox or the production Envirement (we are using the sandbox version in this code sample)*
 
 ``` $serverCaller->setUrl("theApiUrl") ```  
 
