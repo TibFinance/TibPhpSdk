@@ -5,7 +5,14 @@ This is a technical document on how to use the Tib php SDK.
 
 ## Overview 
 
-here you'll find CodeSample to how to use the Tib Php SDk 
+here you'll find CodeSamples to how to use the Tib Php SDk 
+
+## Environments
+
+Calls to the service are done via a WEB service. There are two URLs for the service:
+    * Production: https://portal.tib.finance    
+    * Development: http://sandboxportal.tib.finance
+
 
 ## Set Up 
 ` Before you using the SDK you need to set the api url up and get a session id. `
@@ -15,6 +22,8 @@ Initiat the Server Caller Class
 ``` $serverCaller = new ServerCaller(); ```
 
 Then set the api Url 
+
+*the link can be either the Sandbox or the production Envirement (we are using the sandbox version in this code sample)*
 
 ``` $serverCaller->setUrl("theApiUrl") ```  
 
@@ -61,43 +70,42 @@ object(stdClass)#43 (7) {
 }
 
 ```
-We ca have as many ways to handle the response here be now we will focus on how to handle errors here 
+We can have many ways to handle the response, now we will focus on how to handle errors here:
 - the most important properties of the object when it comes to Error Handling are :
     * "HasError" which is a boolean that tells you either the response has an error or not 
     * "Errors" which is an array of Errors
     * "Messages" the message that somes with the Response (eeven if no error is presented).
 
 - so basicaly you can do something like : 
-    ```
+```
     function ResponseHandler($responseObejct){
-
         if(isset($responseObejct->HasError)){
             if($responseObejct->HasError){
                 // Do Something in Case of the Response Object HasError returns True 
             }else{
-                // Do something in the Call of a Successfull operation.
+                // Do something in the Case of the Response Object HasError returns false.
             }
         }
     }
-    ```
+```
 - This is a real life Example of a session token refresh after the session token Expires;
-    ```
-        function ResponseHandler($responseObj)
-        {
-            if (isset($responseObj->HasError)) {
-                if ($responseObj->HasError) {
-                    var_dump_pre($responseObj->Messages);
-                    if( $responseObj->Messages == "Need an authenticated user to perform this action" ){
-                        header('location: ./Calls.php?action=CreateCustomer');
-                    }
-                } else {
-                    var_dump_pre($responseObj);
+```
+    function ResponseHandler($responseObj)
+    {
+        if (isset($responseObj->HasError)) {
+            if ($responseObj->HasError) {
+                var_dump_pre($responseObj->Messages);
+                if( $responseObj->Messages == "Need an authenticated user to perform this action" ){
+                    header('location: ./Calls.php?action=CreateCustomer');
                 }
             } else {
-                var_dump_pre("..");
+                var_dump_pre($responseObj);
             }
+        } else {
+            var_dump_pre("..");
         }
-    ```
+    }
+```
 this is a way to handle a response , you can choose your own way to handle the response you get. 
 just keep in mind that every response contains the said properties 
  
