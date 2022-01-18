@@ -96,7 +96,7 @@ We can have many ways to handle the response, now we will focus on how to handle
             if ($responseObj->HasError) {
                 var_dump_pre($responseObj->Messages);
                 if( $responseObj->Messages == "Need an authenticated user to perform this action" ){
-                    header('location: ./Calls.php?action=CreateCustomer');
+                    header('location: ./Calls.php?action=CreateSession');
                 }
             } else {
                 var_dump_pre($responseObj);
