@@ -37,7 +37,7 @@ function ResponseHandler($responseObj)
         if ($responseObj->HasError) {
             var_dump_pre($responseObj->Messages);
             if( $responseObj->Messages == "Need an authenticated user to perform this action"){
-                header('location: ./Calls.php?action=CreateCustomer');
+                header('location: ./Calls.php?action=CreateSession');
             }
         } else {
             var_dump_pre($responseObj);
@@ -59,6 +59,7 @@ switch ($_GET["action"]) {
         if(!$result->HasError)
         {
             setcookie("SessionIdToken", $result->SessionId);
+            header("location: ./");
         }
         break;
     case "CreateCustomer":
