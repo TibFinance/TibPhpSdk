@@ -13,13 +13,11 @@ First and foremost you'll need to have a session token to be able to make calls 
 
 *The client ID is required for the session creation call. This identification is provided by TIB during the account opening*
 ```
-var sessionArgs = new CreateSessionArgs()
-{
-	ClientId = new Guid("CLIENT_ID"), // GUID
-	Username = "", // String
-	Password = "", // String
-};
-var response = TibInvoker.Portal.CreateSession(sessionArgs);
+	$ClientId = ""; // the Client Id. 
+	$userName = ""; // a user name
+	$password = ""; /: a password
+
+	$serverCaller->CreateSession($ClientId, $userName, $password) 
 ```
 *'response.SessionId' is required in every SDK method*
 
@@ -32,36 +30,33 @@ But you Can Create a merchant account with the Api, first understand that the Me
 The Following Code Show the MerchantModel object
 
 ```
-var merchantInfo = new Tib.Api.Model.Service.MerchantModel
-{
-	EmailCopyTo = "",
-	ExternalSystemId = "",
-	Email = "",
-	FavoriteProvider = ProviderEnum.CA_CreditCard_BankOfAmerica,
-	Language = LanguageEnum.English,
-	MerchantCurrency = CurrencyEnum.USD,
-	MerchantDescription = "",
-	MerchantName = "",
-	PhoneNumber = "",
-	ExternalSystemGroupId = "",
-	Address = new AddressModel
-	{
-		AddressCity = "",
-		CountryId = CountryIdEnum.USA,
-		PostalZipCode = "",
-		ProvinceStateId = ProvinceStateIdEnum.US_Kentucky,
-		StreetAddress = ""
-	},
-	Account = new Tib.Api.Model.PaymentMethod.AccountModel
-	{
-		AccountName = "",
-		AccountNumber = "",
-		BankNumber = "",
-		CheckDigit = "",
-		InstitutionNumber = "",
-		Owner = "",
-	}
-};
+$merchantInfo = [
+	"EmailCopyTo" => "",
+	"ExternalSystemId" => "",
+	"Email" => "",
+	"FavoriteProvider" => 0,
+	"Language" => 0,
+	"MerchantCurrency" => 0,
+	"MerchantDescription" => "",
+	"MerchantName" => "",
+	"PhoneNumber" => "",
+	"ExternalSystemGroupId" => "",
+	"Address" => [
+		"AddressCity" => "",
+		"CountryId" => 0,
+		"PostalZipCode" => "",
+		"ProvinceStateId" => 0,
+		"StreetAddress" => ""
+	],
+	"Account" => [
+		"AccountName" => "",
+		"AccountNumber" => "",
+		"BankNumber" => "",
+		"CheckDigit" => "",
+		"InstitutionNumber" => "",
+		"Owner" => ""
+	],
+]; 
 
 ```
 
@@ -70,14 +65,7 @@ var merchantInfo = new Tib.Api.Model.Service.MerchantModel
 After filling out the correct information for the merchant creationg you'll need to pass the object to the CreateMerchant Method :
 
 ```
-var createMerchantArgs = new Tib.Api.Model.Service.CreateMerchantArgs
-{
-	SessionToken = _session, / Session Guid Gotten earlier
-	MerchantInfo = merchantInfo, // Merchant Info
-	ServiceId = _service // ServiceId
-}
-
-var result = TibInvoker.Portal.CreateMerchant(createMerchantArgs)
+$result = $serverCaller->CreateMerchant($merchantInfo, $sessionToken, $serviceId);
 ```
 *Save the merchant Id to use it Later when creating bills*
  
@@ -88,32 +76,19 @@ Customers are the clients of the merchants. They are the one the merchant collec
 
 The customer is only a container object that identify the entity of a person. This object will then have payment methods attached to it for the account information. The customer ID needs to be used when transmitting payment on the API.
 
-*This ID is a “Guid” formatted hexadecimal*
 
-The Following Code Show the Customer Entity
+The Following Code Shows the Customer information 
 ```
-var customer = new Tib.Api.Model.Customer.CustomerEntity
-{
-	CustomerDescription = "",
-	CustomerName = "",
-	Language = LanguageEnum.English,
-	CustomerExternalId = ""
-}
+$customerName = "Customer 200";
+$customerExternalId = "C132-344";
+$language = 1;
+$customerDescription = "Customer created from new PHP SDK";
+
 ```
 
 This code is the args to create a customer
 ```
-var createCustomerArgs = new Tib.Api.Model.Customer.CreateCustomerArgs
-{
-	SessionToken = _session,
-	ServiceId = _service,
-	Customer = customer
-}
-```
-This is the actual api call to create the customer
-
-```
-var result = TibInvoker.Portal.CreateCustomer(createCustomerArgs);
+$result = $serverCaller->createCustomer($customerName, $customerExternalId, $language, $customerDescription, $serviceId, $sessionToken);
 ```
 
 ## Creating Payment Methods
@@ -128,48 +103,45 @@ Currently the TibFinance Supports 3 payment Method Types:
 * Bank account
 * Interac 
 
+*NOTE Different than the .net SDK qnd the .net core SDK where each payment method creation had it's own signature*
+*here all the payment methods are created using the same Method name the key difference here is `$type` variable*
+*the `$type` variable can have only one of the 3 values which are the 3 different payment methods suported by Tib Api*
+```
+$types = [
+	"Account" => "Account", 
+	"CreditCard" => "CreditCard", 
+	"Interac" => "InteracInformation"
+];
+        
+```
 #### Credit card
 
 Credit card payment method allow the merchant to collect money from the customer’s credit card.
 
 *NOTE The credit card payment method cannot be used during deposit.*
 
-The Following the CreditCardModel
+The Following code is the Arguments for creating Create Credit Card Payment method and the call that Creates the Credit Card paymemnt Method.
 ```
-var creditCardModel = new Tib.Api.Model.PaymentMethod.CreditCardModel
-{
-	CardOwner = "",
-	CreditCardDescription = "",
-	CreditCardRegisteredAddress = new AddressModel
-	{
-		AddressCity = "",
-		CountryId = CountryIdEnum.USA,
-		PostalZipCode = "",
-		ProvinceStateId = ProvinceStateIdEnum.US_Alabama,
-		StreetAddress = ""
-	},
-	CVD = "",
-	ExpirationMonth = 5,
-	ExpirationYear = 2029,
-	Pan = 1231,
-}
+$customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
+$isCustomerAutomaticPaymentMethod = true;
+$type = "CreditCard"; 
+$creditCard = [
+	"Pan" => "4242424242424242",
+	"Cvd" => "123",
+	"ExpirationMonth" => "12",
+	"ExpirationYear" => "24",
+	"CreditCardDescription" => "Test card",
+	"CardOwner" => "Johny Cardholder",
+	"CreditCardRegisteredAddress" => [
+		"StreetAddress" => "1 Testing road",
+		"AddressCity" => "Testcity",
+		"ProvinceStateId" => "10",
+		"CountryId" => 1,
+		"PostalZipCode" => "H1H1H1"
+	]
+];
+$result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $creditCard, $type,$sessionToken);
 
-```
-The Following code is the Arguments for creating Create Credit Card Payment method
-```
-var args = new Tib.Api.Model.PaymentMethod.CreateCreditCardPaymentMethodArgs
-{
-	CustomerId = new Guid(), /// ID of the customer you wanna create the payment method for.
-	CreditCard = creditCardModel,
-	SessionToken = _session,
-	Language = LanguageEnum.English,
-	IsCustomerAutomaticPaymentMethod = false,
-	SkipValidation = true
-}
-```
-And this following code is the call that Creates the Credit Card paymemnt Method.
-```
-var result = TibInvoker.Portal.CreateCreditCardPaymentMethod(args)
 ```
 
 #### Bank account
@@ -178,52 +150,37 @@ Bank account payment method type allow to perform direct deposit and process pre
 
 The Following code Displays the Arguments to create a BankAccount Payment Method.
 ```
-var directAccountArgs = new Tib.Api.Model.PaymentMethod.CreateDirectAccountPaymentMethodArgs
-{
-	CustomerId = _customer,
-	Account = new Tib.Api.Model.PaymentMethod.AccountModel
-    {
-		AccountName = "",
-		AccountNumber = "",
-		BankNumber = "",
-		CheckDigit = "",
-		InstitutionNumber = "",
-		Owner = "",
-	},
-	IsCustomerAutomaticPaymentMethod = false,
-	IsCustomerWithdrawaAuthorized = false,
-	Language = LanguageEnum.English,
-	SessionToken = _session,
-};
-
-var result = TibInvoker.Portal.CreateDirectAccountPaymentMethod(directAccountArgs);
+$customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
+$isCustomerAutomaticPaymentMethod = true;
+$type = "Account";
+$account = [
+	"Owner" => "Customer 200",
+	"AccountName" => "Personal bank account",
+	"BankNumber" => "003",
+	"InstitutionNumber" => "12345",
+	"AccountNumber" => "9876543"
+];
+$result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $account, $type,$sessionToken);
 ```
 #### Interac
 
 This payment method type allows to use Interac to collect or deposit money to a customer account.
 
-The following  code displays the Arguments to Create an Interac Payment Method.
+The following  code displays the Arguments to Create an Interac Payment Method. and the Call to the Api.
 ```
-var interacArgs = new Tib.Api.Model.PaymentMethod.CreateInteracPaymentMethodArgs
-{
-	CustomerId = new Guid(),
-	InteracInformation = new Tib.Api.Model.PaymentMethod.InteracModel
-	{
-		Description = "",
-		InteracQuestion = "",
-		InteracAnswer = "",
-		Owner = "",
-		TargetEmailAddress = "",
-		TargetMobilePhoneNumber = ""
-	},
-	IsCustomerAutomaticPaymentMethod = false, 
-	Language = LanguageEnum.English, 
-	SessionToken = _session
-}; 
-```
-Then call the Create Interac Method 
-```
-var result  = TibInvoker.Portal.CreateInteracPaymentMethod(interacArgs);
+$customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
+$isCustomerAutomaticPaymentMethod = true;
+$type = "Interac";
+$InteracInformation = [
+	"Description" => "Interac Test",
+	"Owner" => "Kelly Interac",
+	"TargetEmailAddress" => "kinterac@dummytest.com",
+	"TargetMobilePhoneNumber" => "8881234567",
+	"InteracQuestion" => "Remember the fruit",
+	"InteracAnswer" => "Orange"
+];
+
+$result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $InteracInformation, $type,$sessionToken);
 ```
 
 ## Bills and payments.
@@ -236,30 +193,21 @@ When creating a bill, it will return the created bill ID for further operation o
 
 The following code displays the information needed for a bill Entitty
 ```
-var bill = new BillEntity
-{
-	BillAmount = amount,
-	BillCurrency = (CurrencyEnum)currency,
-	BillDescription = desc,
-	BillTitle = title,
-	Language = (LanguageEnum)language,
-	MerchantId = new Guid(), // Id of the Merchant you wanna create the bill for
-	RelatedCustomerId = new Guid(), // Id of the customer you wanna create the bill for.
-	UseConvenientFeeRule = false
-}
-```
-Here the Arguments for creating a bill
-```
-var createBillArgs = new CreateBillArgs
-{
-	SessionToken = _session,
-	BreakIfMerchantNeverBeenAuthorized = true,
-	BillData = bill
-}
-```
-Now we call the create bill method
-```
-var result = TibInvoker.Portal.CreateBill(createBillArgs)
+$breakIfMerchantNeverBeenAuthorized = true;
+$billData = [
+	"MerchantId" => "",
+	"BillTitle" => "",
+	"BillDescription" => "",
+	"BillAmount" => 1,
+	"ExternalSystemBillNumber1" => "",
+	"ExternalSystemBillNumber2" => "",
+	"ExternalSystemBillNumber3" => "",
+	"BillCurrency" => 2,
+	"Language" => 1,
+	"RelatedCustomerId" => "bf199033-53a1-48cd-8f17-04254d026ecd"
+];
+
+$result = $serverCaller->createBill($breakIfMerchantNeverBeenAuthorized, $billData, $sessionToken);
 ```
 *Now that we have the bill we can start creating payments for that bill .*
 
@@ -272,18 +220,18 @@ The following code show the Arguments needed for Creating a payment
 
 *In this Example We are working with Annonymous Payment*
 ```
-var paymentArgs = new CreatePaymentArgs
-{
-	BillId = _bill, // bill Id For the bill we have just created.
-	SessionToken = _session, 
-	CustomerEmail = "",
-	PaymentInfo = new Tib.Api.Model.PaymentMethod.PaymentEntity
-	{
-		PaymentFlow = PaymentFlowEnum.AnonymousNeedCustomerEmailPropertySet,
-		Language = LanguageEnum.English
-	},
-	StatementDescription = ""
-}
+$billId = "3c7792af-f377-48ba-b3f1-0474f6eab127"; // the bill you wanna create the paymemnt for.
+$setPaymentCustomerFromBill = false;
+$customerEmail = "example@example.ca"; //Set the customer email to send the request by email to the customer. It allows the customer to fill its payment method information by himself. This requires the Payment Flow to be set to Anonymous.
+        
+$paymentInfo = [
+	"PaymentFlow" => 1,
+	"RelatedCustomerId" => "", // this field becomes optional when using the anounymous payment flow 
+	"DueDate" => "2021-05-10T16:10:19.000Z",
+	"PaymentAmount" => 1.22
+];
+
+$result = $serverCaller->createPayement($billId, $setPaymentCustomerFromBill,$customerEmail, $paymentInfo,$sessionToken);
 ```
 > PaymentFlow.AnonymousNeedCustomerEmailPropertySet Makes the CustomerEmail Required
 

@@ -13,10 +13,10 @@ $password = "Test123!";
 $clientId = "4671a4c9-4367-4934-bb23-a8886cebd028";
 $serviceId = "038D7171-BF23-4F3C-9E78-CF6342624FC7";
 $merchantId = "EA34F2C6-36B2-4513-973E-A2C91E7985D3";
-$sesstionToken = "33043b6b-6b1f-4e5b-b8dc-1db229c93b1f";
+$sessionToken = "33043b6b-6b1f-4e5b-b8dc-1db229c93b1f";
 
 if(isset($_COOKIE["SessionIdToken"])){
-    $sesstionToken = $_COOKIE["SessionIdToken"];
+    $sessionToken = $_COOKIE["SessionIdToken"];
 }
 function var_dump_pre($mixed = null)
 {
@@ -68,26 +68,26 @@ switch ($_GET["action"]) {
         $language = 1;
         $customerDescription = "Customer created from new PHP SDK";
 
-        $result = $serverCaller->createCustomer($customerName, $customerExternalId, $language, $customerDescription, $serviceId, $sesstionToken);
+        $result = $serverCaller->createCustomer($customerName, $customerExternalId, $language, $customerDescription, $serviceId, $sessionToken);
         ResponseHandler($result);
         break;
 
     case "ListCustomers":
-        $result = $serverCaller->listCustomers($serviceId,$sesstionToken);
+        $result = $serverCaller->listCustomers($serviceId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "GetCustomer":
         $customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
 
-        $result = $serverCaller->getCustomer($customerId,$sesstionToken);
+        $result = $serverCaller->getCustomer($customerId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "GetCustomersByExternalId":
         $customerExternalId = "C132-344";
 
-        $result = $serverCaller->getCustomersByExternalId($customerExternalId,$sesstionToken);
+        $result = $serverCaller->getCustomersByExternalId($customerExternalId,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -98,13 +98,13 @@ switch ($_GET["action"]) {
         $language = 1;
         $customerDescription = "Customer updated by new PHP SDK";
 
-        $result = $serverCaller->saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerDescription,$sesstionToken);
+        $result = $serverCaller->saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerDescription,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "DeleteCustomer":
         $customerId = "dc09fbbf-4067-4b21-af09-81707fd227a6";
-        $result = $serverCaller->deleteCustomer($customerId,$sesstionToken);
+        $result = $serverCaller->deleteCustomer($customerId,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -119,7 +119,7 @@ switch ($_GET["action"]) {
             "InstitutionNumber" => "12345",
             "AccountNumber" => "9876543"
         ];
-        $result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $account, $type,$sesstionToken);
+        $result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $account, $type,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -142,16 +142,15 @@ switch ($_GET["action"]) {
                 "PostalZipCode" => "H1H1H1"
             ]
         ];
-        $result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $creditCard, $type,$sesstionToken);
+        $result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $creditCard, $type,$sessionToken);
         ResponseHandler($result);
         break;
     case "ChangeInteracPaymentMethodQuestionAndAnswer":
         $id = "";
         $question = "new Question";
         $answer = "new answer ";
-        $result = $serverCaller->ChangeInteracPaymentMethodQuestionAndAnswer($id, $question, $answer,$sesstionToken);
+        $result = $serverCaller->ChangeInteracPaymentMethodQuestionAndAnswer($id, $question, $answer,$sessionToken);
         ResponseHandler($result);
-        break;
         break;
     case "CreateInteracPaymentMethod":
         $customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
@@ -166,21 +165,21 @@ switch ($_GET["action"]) {
             "InteracAnswer" => "Orange"
         ];
 
-        $result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $InteracInformation, $type,$sesstionToken);
+        $result = $serverCaller->createDirectAccountPaymentMethod($customerId, $isCustomerAutomaticPaymentMethod, $InteracInformation, $type,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "getPaymentMethod":
         $paymentId = "5397c23a-e938-47c5-94f8-c2d821959ec5";
 
-        $result = $serverCaller->getPaymentMethod($paymentId,$sesstionToken);
+        $result = $serverCaller->getPaymentMethod($paymentId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "ListPaymentMethods":
         $customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
 
-        $result = $serverCaller->listPaymentMethods($customerId,$sesstionToken);
+        $result = $serverCaller->listPaymentMethods($customerId,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -188,14 +187,14 @@ switch ($_GET["action"]) {
         $paymentMethodId = "5397c23a-e938-47c5-94f8-c2d821959ec5";
         $customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
 
-        $result = $serverCaller->setDefaultPaymentMethod($paymentMethodId, $customerId,$sesstionToken);
+        $result = $serverCaller->setDefaultPaymentMethod($paymentMethodId, $customerId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "DeletePaymentMethod":
         $paymentMethodId = "5397c23a-e938-47c5-94f8-c2d821959ec5";
 
-        $result = $serverCaller->deletePaymentMethod($paymentMethodId,$sesstionToken);
+        $result = $serverCaller->deletePaymentMethod($paymentMethodId,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -214,7 +213,7 @@ switch ($_GET["action"]) {
             "RelatedCustomerId" => "bf199033-53a1-48cd-8f17-04254d026ecd"
         ];
 
-        $result = $serverCaller->createBill($breakIfMerchantNeverBeenAuthorized, $billData,$sesstionToken);
+        $result = $serverCaller->createBill($breakIfMerchantNeverBeenAuthorized, $billData,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -222,35 +221,37 @@ switch ($_GET["action"]) {
         $fromDateTime = "2021-02-16T13:45:00.000Z";
         $toDateTime = "2021-05-16T13:45:00.000Z";
 
-        $result = $serverCaller->listBills($merchantId, $fromDateTime, $toDateTime,$sesstionToken);
+        $result = $serverCaller->listBills($merchantId, $fromDateTime, $toDateTime,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "GetBill":
         $billId = "b2678654-9eec-4a6e-aeaa-8d0893b2a986";
 
-        $result = $serverCaller->getBill($billId,$sesstionToken);
+        $result = $serverCaller->getBill($billId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "DeleteBill":
         $billId = "0ec1520e-7f5a-4367-8c7d-0d9684f689fe";
 
-        $result = $serverCaller->deleteBill($billId,$sesstionToken);
+        $result = $serverCaller->deleteBill($billId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "CreatePayement":
+      
         $billId = "3c7792af-f377-48ba-b3f1-0474f6eab127";
         $setPaymentCustomerFromBill = false;
+        $customerEmail = ""; //Set the customer email to send the request by email to the customer. It allows the customer to fill its payment method information by himself. This requires the Payment Flow to be set to Anonymous.
         $paymentInfo = [
-            "PaymentFlow" => 6,
+            "PaymentFlow" => 1,
             "RelatedCustomerId" => "d215b447-7746-4865-b9fa-78e72a2f5678",
             "DueDate" => "2021-05-10T16:10:19.000Z",
             "PaymentAmount" => 1.22
         ];
 
-        $result = $serverCaller->createPayement($billId, $setPaymentCustomerFromBill, $paymentInfo,$sesstionToken,$sesstionToken);
+        $result = $serverCaller->createPayement($billId, $setPaymentCustomerFromBill, $customerEmail, $paymentInfo,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -269,7 +270,7 @@ switch ($_GET["action"]) {
         $amount = 1.22;
         $referenceNumber = "C12343-324";
 
-        $result = $serverCaller->createDirectDeposit($originMerchantId, $destinationAccount, $depositDueDate, $currency, $language, $amount, $referenceNumber,$sesstionToken);
+        $result = $serverCaller->createDirectDeposit($originMerchantId, $destinationAccount, $depositDueDate, $currency, $language, $amount, $referenceNumber,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -288,12 +289,12 @@ switch ($_GET["action"]) {
         $amount = 1.22;
         $referenceNumber = "C12343-324";
 
-        $result = $serverCaller->createDirectDeposit($originMerchantId, $interacInformation, $depositDueDate, $currency, $language, $amount, $referenceNumber,$sesstionToken);
+        $result = $serverCaller->createDirectDeposit($originMerchantId, $interacInformation, $depositDueDate, $currency, $language, $amount, $referenceNumber,$sessionToken);
         ResponseHandler($result);
         break;
     case "CreateTransactionFromRaw":
         $rawAcpFileContent = "";
-        $result = $serverCaller->createTransactionFromRaw($merchantId, $rawAcpFileContent,$sesstionToken);
+        $result = $serverCaller->createTransactionFromRaw($merchantId, $rawAcpFileContent,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -307,33 +308,33 @@ switch ($_GET["action"]) {
         $groupId = "HT123123";
         $transferFrequency = 0;
 
-        $result = $serverCaller->createFreeOperation($merchantId, $paymentMethodId, $transferType, $referenceNumber, $amount, $language, $transactionDueDate, $groupId, $transferFrequency,$sesstionToken);
+        $result = $serverCaller->createFreeOperation($merchantId, $paymentMethodId, $transferType, $referenceNumber, $amount, $language, $transactionDueDate, $groupId, $transferFrequency,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "DeletePayement":
         $paymentId = "03c415fd-5f64-4678-a388-39facbb2bee1";
 
-        $result = $serverCaller->deletePayment($paymentId,$sesstionToken);
+        $result = $serverCaller->deletePayment($paymentId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "RevertTransfer":
         $transferId = "c9a521d5-60a1-4398-8f6c-7462797d584c";
 
-        $result = $serverCaller->revertTransfer($transferId,$sesstionToken);
+        $result = $serverCaller->revertTransfer($transferId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "GetRecuringTransfers":
-        $result = $serverCaller->getRecuringTransfers($serviceId,$sesstionToken);
+        $result = $serverCaller->getRecuringTransfers($serviceId,$sessionToken);
         ResponseHandler($result);
         break;
 
     case "DeleteRecuringTransfer":
         $recuringTransferId = "89d720f2-78ae-4816-8fda-0099aa867c38";
 
-        $result = $serverCaller->deleteRecuringTransfer($recuringTransferId,$sesstionToken);
+        $result = $serverCaller->deleteRecuringTransfer($recuringTransferId,$sessionToken);
         ResponseHandler($result);
         break;
 
@@ -346,7 +347,7 @@ switch ($_GET["action"]) {
         $merchantId = "";
         $dateType = "";
 
-        $result = $serverCaller->listExecutedOperations($fromDate, $toDate, $transferType, $transferGroupId, $onlyWithErrors, $merchantId, $dateType, $sesstionToken);
+        $result = $serverCaller->listExecutedOperations($fromDate, $toDate, $transferType, $transferGroupId, $onlyWithErrors, $merchantId, $dateType, $sessionToken);
         ResponseHandler($result);
         break;
 
@@ -363,19 +364,19 @@ switch ($_GET["action"]) {
                 "CssValue" => "red"
             ],
         ];
-        $result = $serverCaller->SetwhiteLabeling($id, $level, $whiteLabelingData,$sesstionToken);
+        $result = $serverCaller->SetwhiteLabeling($id, $level, $whiteLabelingData,$sessionToken);
         ResponseHandler($result);
         break;
     case "GetWhiteLabeling":
         $id = $clientId;  // entity Id ; 
         $level = 3; // entity level; 
-        $result = $serverCaller->GetwhiteLabeling($id, $level,$sesstionToken);
+        $result = $serverCaller->GetwhiteLabeling($id, $level,$sessionToken);
         ResponseHandler($result);
         break;
     case "DeleteWhiteLabeling":
         $id = $clientId;  // entity Id ; 
         $level = 3; // entity level; 
-        $result = $serverCaller->DeleteWhiteLabelingData($id, $level,$sesstionToken);
+        $result = $serverCaller->DeleteWhiteLabelingData($id, $level,$sessionToken);
         ResponseHandler($result);
         break;
     case "UpdateWhiteLabeling":
@@ -398,18 +399,18 @@ switch ($_GET["action"]) {
                 "CssValue" => "...."
             ],
         ];
-        $result = $serverCaller->UpdateWhiteLabelingData($id, $level, $updateWhiteLabelingData,$sesstionToken);
+        $result = $serverCaller->UpdateWhiteLabelingData($id, $level, $updateWhiteLabelingData,$sessionToken);
         ResponseHandler($result);
         break;
     case "GetListWhiteLabeling":
-        $result = $serverCaller->GetListWhiteLabelingData($sesstionToken);
+        $result = $serverCaller->GetListWhiteLabelingData($sessionToken);
         ResponseHandler($result);
         break;
 
     case "CreateSubClient":
         $name = "new sub Client";
         $language = 2;
-        $result = $serverCaller->CreateSubClient($name, $language,$sesstionToken);
+        $result = $serverCaller->CreateSubClient($name, $language,$sessionToken);
         ResponseHandler($result);
         break;
     case "SetClientDefaultServicefeeSettings":
@@ -418,7 +419,7 @@ switch ($_GET["action"]) {
             "ConvenientFeeDebitAbsoluteFee" => 0,
             "ConvenientFeeCreditAbsoluteFee" => 0,
         ];
-        $result = $serverCaller->SetClientDefaultServiceFeeSettings($clientId, $ServiceFeeSettings,$sesstionToken);
+        $result = $serverCaller->SetClientDefaultServiceFeeSettings($clientId, $ServiceFeeSettings,$sessionToken);
         ResponseHandler($result);
         break;
     case "SetClientSettings":
@@ -427,15 +428,365 @@ switch ($_GET["action"]) {
             "CollectionLimitDaily" => 93849,
             "DepositLimitDaily" => 2994949
         ];
-        $result = $serverCaller->SetClientSettings($clientId, $clientSettings,$sesstionToken);
+        $result = $serverCaller->SetClientSettings($clientId, $clientSettings,$sessionToken);
         ResponseHandler($result);
         break;
     case "GetClientSettings":
         $clientId = $clientId;
-        $result = $serverCaller->GetClientSettings($clientId,$sesstionToken);
+        $result = $serverCaller->GetClientSettings($clientId,$sessionToken);
         ResponseHandler($result);
         break;
+    case "GetDepositOperations": 
+        $merchantExternalGroupId = ""; 
+        $fromDate = ""; 
+        $toDate = ""; 
+        $transferGroupId = "";
+        $onlyWithErrors = false; 
+        $merchantId = ""; 
+        $sessionToken = ""; 
+        $result = $serverCaller->GetDepositOperations($merchantExternalGroupId, $fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "MarkPaymentResolved": 
+        $listOfPayments = [
+            "",""// list of Guid "Payment Ids"
+        ]; 
+        $result = $serverCaller->MarkPaymentResolved($listOfPayments,$sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "GetFreeDepositOperations": 
+        $formDate = ""; 
+        $todate = ""; 
+        $transferGroupId = ""; 
+        $onlyWithErrors = false; 
+        $merchantId = ""; 
+        $result = $serverCaller->GetFreeDepositOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "GetFreeCollectionOperations": 
+        $formDate = ""; 
+        $todate = ""; 
+        $transferGroupId = ""; 
+        $onlyWithErrors = false; 
+        $merchantId = ""; 
+        $result = $serverCaller->GetFreeCollectionOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "GetMerchantsByExternalId": 
+        $externalSystemId = ""; // the merchants External Id
+        $externalSystemGroupId = ""; // the merchant's External SystemGroup Id
+        $result = $serverCaller->GetMerchantsByExternalId($externalSystemId, $externalSystemGroupId, $sessionToken); 
+        ResponseHandler($result);
+        break;
+        
+    case "ForcePaymentProcess": 
+        $paymentId =""; 
+        $result = $serverCaller->ForcePaymentProcess($paymentId, $sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "Login": 
+        $clientId = "";
+        $loginUserRelationsId = "";  
+        $username = ""; 
+        $password = ""; 
+        $result = $serverCaller->Login($clientId, $loginUserRelationsId, $username, $password);
+        break;
+        
+    case "GetLoginAccessList": 
+        $clientId = ""; 
+        $username = ""; 
+        $password = ""; 
+        $result = $serverCaller->GetLoginAccessList($clientId, $username, $password, $sessionToken);
+        break;
+        
+    case "GetDropInPublicToken": 
+        $clientId = ""; 
+        $billId = ""; 
+        $amount = 12; 
+        $transferType = 1; 
+        $dropInAutorizedPaymentMethod = 1; 
+        $externalReferenceNumber = "";
+        $showCustomerExistingPaymentMethods= false; // determins if we should show the customers existing Payment Methods or not.
+        $language = 1; 
+        $expirationDate = ""; 
+        $title = ""; 
+        $description = ""; 
+        $paymentDueDate = ""; 
+        $merchantId = ""; 
+        $result = $serverCaller->GetDropInPublicToken(
+            $clientId, 
+            $bill, 
+            $amount, 
+            $transferType, 
+            $dropInAutorizedPaymentMethod, 
+            $externalReferenceNumber,
+            $showCustomerExistingPaymentMethods, 
+            $language,
+            $expirationDate, 
+            $title, 
+            $description, 
+            $paymentDueDate, 
+            $merchantId, 
+            $sessionToken
+        );
+        ResponseHandler($result);
+        break;
+        
+    case "AddNewDasProvider": 
+        $merchantId = ""; 
+        $DasProviderType = 1; 
+        $DasProviderQuebec = [
+            "DasProviderType" => 1,
+            "IdentificationNumber" => "",
+            "FileType" => 1, 
+            "FileNumber" =>"", 
+            "DeclarationFrequency" => 1, 
+            "Description" => ""
+        ]; 
+        $DasProviderCanada = [
+            "DasProviderType" => 1,
+            "BusinessName" => "",
+            "BusinessOrAccountNumber" => "",
+            "FileType" => 1, 
+            "FileNumber" =>"", 
+            "DeclarationFrequency" => 1, 
+            "Description" => ""
+        ]; 
+        
+        $result = $serverCaller->AddNewDasProvider($merchantId, $DasProviderType, $DasProviderQuebec, $DasProviderCanada, $sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "AddNewDasPayment": 
+        $merchantId = ""; 
+        $DasProviderId = "";
+        $DasPaymentProviderType = 1; 
+        $DasPaymentQuebec = [
+            "PeriodStartDate" => [
+                "Day" => 2,
+                "Month" => 2,
+                "Year" => 2000
+            ],
+            "PeriodEndDate" => [
+                "Day" => 2,
+                "Month" => 2,
+                "Year" => 2000
+            ],
+            "WithhodingTax" => 1, 
+            "RetirementPensionPlan" => 405, 
+            "HealthServiceFund" => 1, 
+            "ParentalInsurancePlan" => 405,
+            "CNESST" => 1
+        ]; 
+        $DasPaymentCanada = [
+            "PeriodEndDate" => [
+                "Month" => 2,
+                "Year" => 200,
+            ],
+            "LastPayPeriodEmployeeCount" => 1, 
+            "PeriodRawRemuneration" => 1, 
+            "PaymentAmount" => 0
+        ]; 
+        
+        $result = $serverCaller->AddNewDasPayment($merchantId, $DasProviderId, $DasPaymentProviderType, $DasPaymentCanada, $DasPaymentQuebec, $sessionToken);
+        ResponseHandler($result);
+        break;
+        
+    case "ListDasProviders": 
+        $merchantId = ""; 
+        $result = $serverCaller->ListDasProviders($merchantId, $sessionToken); 
+        ResponseHandler($result);
+        break;
+        
+    case "ListDasPayments": 
+        $merchantId = ""; 
+        $DasProviderId = ""; 
+        $result = $serverCaller->ListDasPayments($merchantId, $DasProviderId, $sessionToken);
+        ResponseHandler($result);
+        break;
+    case "ListServices": 
+        $merchantId = ""; 
+        $result= $serverCaller->ListServices($merchantId, $sessionToken);
+        ResponseHandler($result);
+        break;
+    case "GetService": 
+        $serviceId = ""; 
+        $result = $serverCaller->GetService($serviceId, $sessionToken);
+        break;
+    case "CreatePayment": 
+        $billId = ""; 
+        $setPaymentCustomerFromBill = false; 
+        $customerEmail =""; // required when the ppaymentFlow is set to anonymous.
+        $paymentInfo = [
+            "PaymentFlow" =>1,
+            "Language" => 1, // Nullable
+            "RelatedCustomerId" => "", //nullable
+            "DueDate" => "", // nullable
+            "TransferFrequency" => 1, 
+            "PaymentAmount" => 12, // nullable
+            "ForcedCustomerPaymentMethodId" => "", //nullable
+            "GroupId" => "",
+            "ExternalReferenceIdentification" =>"",
+            "AutorizedPaymentMethod" =>1, // nullable
+            "AskForCustomerConsent" =>"",
+        ]; 
+        $externalReferenceId = ""; 
+        $askForConsent = false; 
+        $safetyToBreakIfOverRemainingBillAmount= false; 
+        $authorizedPaymentMethod = 1;
+        $doNoteSendemail = false; 
+        $statementDescription = "";
+        $result = $serverCaller->CreatePayment(
+            $billId, 
+            $setPaymentCustomerFromBill, 
+            $customerEmail, 
+            $paymentInfo, 
+            $externalReferenceId, 
+            $askForConsent, 
+            $safetyToBreakIfOverRemainingBillAmount, 
+            $authorizedPaymentMethod, 
+            $doNoteSendemail, 
+            $statementDescription,
+            $sessionToken
+        );
+        ResponseHandler($result);
+    break;
 
+    case "CreateMerchant":
+        $merchantInfo = [
+            "EmailCopyTo" => "",
+            "ExternalSystemId" => "",
+            "Email" => "",
+            "FavoriteProvider" => 0,
+            "Language" => 0,
+            "MerchantCurrency" => 0,
+            "MerchantDescription" => "",
+            "MerchantName" => "",
+            "PhoneNumber" => "",
+            "ExternalSystemGroupId" => "",
+            "Address" => [
+                "AddressCity" => "",
+                "CountryId" => 0,
+                "PostalZipCode" => "",
+                "ProvinceStateId" => 0,
+                "StreetAddress" => ""
+            ],
+            "Account" => [
+                "AccountName" => "",
+                "AccountNumber" => "",
+                "BankNumber" => "",
+                "CheckDigit" => "",
+                "InstitutionNumber" => "",
+                "Owner" => ""
+            ],
+        ]; 
+        $result = $serverCaller->CreateMerchant($merchantInfo, $sessionToken, $serviceId);
+    break; 
+    
+    case "SaveMerchant": 
+        $merchantId = ""; 
+        $merchantInfo = [
+            "MerchantName" => "",
+            "ExternalSystemId" => "",
+            "ExternalSystemGroupId" => "",
+            "MerchantCurrency" => "",
+            "Language" => "",
+            "Email" => "",
+            "EmailCopyTo" => "",
+            "PhoneNumber" => "",
+            "MerchantDescription" => "",
+            "Address" => [    
+                "StreetAddress" => "",
+                "AddressCity" => "",
+                "ProvinceStateId" => 1,
+                "CountryId" => 1,
+                "PostalZipCode" => "",
+            ],
+            "FavoriteProvider" => "",
+            "Account" => [
+                "AccountName" => "",
+                "Owner" => "",
+                "BankNumber" => "",
+                "InstitutionNumber" => "",
+                "AccountNumber" => "",
+                "CheckDigit" => "",
+                "FullAccountNumber" => "",
+                "AccountNumberWithCheckDigit" => "",
+                "PreviewString" => "",
+            ],
+        ]; 
+        $result  = $serverCaller->SaveMerchant($merchantId, $merchantInfo, $sessionToken);
+        ResponseHandler($result);
+    break;
+
+    case "SaveMerchantAccountInfo": 
+        $merchantId = ""; 
+        $merchantInfo = [
+            "Account" => [
+                "AccountName" => "",
+                "Owner" => "",
+                "BankNumber" => "",
+                "InstitutionNumber" => "",
+                "AccountNumber" => "",
+                "CheckDigit" => "",
+                "FullAccountNumber" => "",
+                "AccountNumberWithCheckDigit" => "",
+                "PreviewString" => "",
+            ],
+        ];
+        $result  = $serverCaller->SaveMerchantAccountInfo($merchantId, $merchantInfo, $sessionToken);
+        ResponseHandler($result);
+    break;
+
+    case "SaveMerchantBasicInfo": 
+        $merchantId = ""; 
+        $merchantInfo = [
+            "MerchantName" => "",
+            "ExternalSystemId" => "",
+            "ExternalSystemGroupId" => "",
+            "MerchantCurrency" => "",
+            "Language" => "",
+            "Email" => "",
+            "EmailCopyTo" => "",
+            "PhoneNumber" => "",
+            "MerchantDescription" => "",
+            "Address" => [    
+                "StreetAddress" => "",
+                "AddressCity" => "",
+                "ProvinceStateId" => 1,
+                "CountryId" => 1,
+                "PostalZipCode" => "",
+            ],
+            "FavoriteProvider" => ""
+        ];
+        $result  = $serverCaller->SaveMerchantBasicInfo($merchantId, $merchantInfo, $sessionToken);
+        ResponseHandler($result);
+    break;
+
+    case "DeleteMerchant": 
+        $merchantId = ""; 
+        $result = $serverCaller->DeleteMerchant($merchantId, $sessionToken);
+        ResponseHandler($result);
+    break;
+
+    case "GetMerchant": 
+        $merchantId = ""; 
+        $result = $serverCaller->GetMerchant($merchantId, $sessionToken);
+        ResponseHandler($result);
+    break;
+
+    case "ListMerchants": 
+        $serviceId = ""; 
+        $result = $serverCaller->ListMerchants($serviceId, $sessionToken);
+        ResponseHandler($result);
+    break;
+    
     case "":
         ResponseHandler("Error => Please, add an action param in http request");
+    break;
 }

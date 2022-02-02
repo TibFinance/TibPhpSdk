@@ -27,9 +27,7 @@
     <li class="li-group">
       <strong>Login (Create Session)</strong>
       <form action="./Calls.php?action=CreateSession" method="POST">
-        <!-- <input type="text" placeholder="Client ID" name="clientId">
-        <input type="text" placeholder="Username" name="username">
-        <input type="password" placeholder="Password" name="password"> -->
+      
         <input type="submit" value="Login">
       </form>
     </li>
@@ -47,6 +45,22 @@
         </li>
         <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing customer</a></li>
         <li><a href="./Calls.php?action=DeleteCustomer" targer="_blank">Delete a customer</a></li>
+      </ul>
+    </li> <li class="li-group">
+      <strong>Merchants</strong>
+      <ul>
+        <li><a href="./Calls.php?action=CreateMerchant" targer="_blank">Create a Merchants</a></li>
+        <li><a href="./Calls.php?action=ListCustomers" targer="_blank">List Merchants </a></li>
+        <li><a href="./Calls.php?action=GetCustomer" targer="_blank">Get merchant </a></li>
+        <li>
+          <a href="./Calls.php?action=GetCustomersByExternalId" targer="_blank">
+            save merchant
+          </a>
+        </li>
+        <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Basic Info</a></li>
+        <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Account Info</a></li>
+        <!-- <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Basic Info</a></li> -->
+        <li><a href="./Calls.php?action=DeleteCustomer" targer="_blank">Delete a Merchant</a></li>
       </ul>
     </li>
     <li class="li-group">

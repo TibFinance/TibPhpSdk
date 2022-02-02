@@ -10,7 +10,7 @@ require("Crypto/TibCrypto.php");
 class ServerCaller
 {
     private $tibCrypto;
- 
+
     public function __construct()
     {
         // $this->tibCrypto = new TibCrypto($url);
@@ -44,7 +44,7 @@ class ServerCaller
         ];
         return $this->tibCrypto->performCall($methodName, $data);
     }
-
+    
     // Customer Methods
     /**
      * Create a new customer
@@ -174,6 +174,127 @@ class ServerCaller
         $data = [
             "CustomerId" => $customerId,
             "SessionToken" => $SessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    // Merchant Methods
+    
+    /** Creates a New Merchant in a Specific Service
+     * @param Array merchantObj
+     * @param Guid SessionToken
+     * @param Guid ServiceId
+     */
+    public function  CreateMerchant($merchantInfo, $serviceId, $sessionToken)
+    {
+        $methodName = "/Data/CreateMerchant";
+
+        $data = [
+            "ServiceId" => $serviceId,
+            "MerchantInfo" => $merchantInfo,
+            "SessionToken" => $sessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Lists the Merchants available for a specific Service.
+     * @param Guid ServiceId 
+     * @param Guid SessionToken
+     */
+    public function ListMerchants($serviceId, $sessionToken){
+        $methodName = "/Data/ListMerchants";
+
+        $data = [
+            "ServiceId" => $serviceId,
+            "SessionToken" => $sessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Gets a specific Merchant Information
+     * @param Guid MerchantId 
+     * @param Guid SessionToken
+     */
+    public function GetMerchant($merchantId, $sessionToken){
+        $methodName = "/Data/GetMerchant";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "SessionToken" => $sessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Updates a specific merchant Information 
+     * @param Guid merchantId 
+     * @param Array MerchantInfo
+     * @param guid SessionToken
+     */
+    public function SaveMerchant($merchantId, $merchantInfo, $sessionToken){
+        $methodName = "/Data/SaveMerchant";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "MerchantInfo" => $merchantInfo, 
+            "SessionToken" => $sessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * updates  a specific merchant Basic information 
+     * @param Guid MerchantId
+     * @param Array MerchantBasicInformation
+     * @param Guid SessionToken
+     */
+    public function SaveMerchantBasicInfo($merchantId, $merchantBasicInfo, $sessionToken){
+        $methodName = "/Data/SaveMerchantBasicInfo";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "MerchantInfo" => $merchantBasicInfo, 
+            "SessionToken" => $sessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Updates a specific merchant Account information 
+     * @param Guid MerchantId 
+     * @param Array MerchantAccount 
+     * @param Guid SessionToken 
+     */
+    public function SaveMerchantAccountInfo($merchantId, $merchantAccount, $sessionToken){
+        $methodName = "/Data/SaveMerchantAccountInfo";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "Account" => $merchantAccount,
+            "SessionToken" => $sessionToken
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Deletes a Merchant
+     * @param Guid MerchantId
+     * @param Guid SessionToken
+     */
+    public function DeleteMerchant($merchantId, $sessionToken){
+        $methodName = "/Data/DeleteMerchant";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "SessionToken" => $sessionToken
         ];
 
         return $this->tibCrypto->performCall($methodName, $data);
@@ -388,13 +509,14 @@ class ServerCaller
      *
      * @return json
      */
-    public function createPayement($billId, $setPaymentCustomerFromBill, $paymentInfo, $SessionToken)
+    public function createPayement($billId, $setPaymentCustomerFromBill,$customerEmail, $paymentInfo, $SessionToken)
     {
         $methodName = "/Data/DeleteBill";
 
         $data = [
             "BillId" => $billId,
             "SetPaymentCustomerFromBill" => $setPaymentCustomerFromBill,
+            "CustomerEmail" => $customerEmail,
             "PaymentInfo" => $paymentInfo,
             "SessionToken" => $SessionToken
         ];
@@ -684,7 +806,7 @@ class ServerCaller
      * @param array $whiteLabelingData the whitelabeling data values.
      * @return json
      */
-    public function GetwhiteLabeling($id, $level, $SessionToken)
+    public function GetWhiteLabelingData($id, $level, $SessionToken)
     {
         $methodName = "/Data/GetWhiteLabelingData";
 
@@ -704,7 +826,7 @@ class ServerCaller
      * @param array $whiteLabelingData
      * @return json
      */
-    public function UpdateWhiteLabelingData($id, $level, $whiteLabelingData, $SessionToken)
+    public function DeleteWhiteLabeling($id, $level, $whiteLabelingData, $SessionToken)
     {
         $methodName = "/Data/UpdateWhiteLabelingData";
 
@@ -830,4 +952,371 @@ class ServerCaller
 
         return $this->tibCrypto->performCall($methodName, $data);
     }
+
+    /**
+     * Gets list deposit operations 
+     * @param Guid merchantexternalGroupId
+     * @param DateTime fromDate
+     * @param DateTime todate
+     * @param Guid transferGroupId
+     * @param Bool onlyWithErrors
+     * @param Guid merchantId
+     * @param Guid sessionToken
+     */
+    public function GetDepositOperations($merchantExternalGroupId, $fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken){
+        $methodName = "/Data/GetDepositOperations";
+
+        $data = [
+            "MerchantExternalGroupId" => $merchantExternalGroupId,
+            "FromDate" => $fromDate,
+            "ToDate" => $toDate,
+            "TransferGroupId" => $transferGroupId,
+            "OnlyWithErrors" => $onlyWithErrors,
+            "MerchantId" => $merchantId, 
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Marks a payment as resolved
+     * @param Array listOfPayment
+     * @param Guid sessionToken
+     */
+    public function MarkPaymentResolved($listOfPayment, $sessionToken){
+        $methodName = "/Data/MarkPaymentResolved";
+
+        $data = [
+            "ListOfPayment" => $listOfPayment,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * gets a list if Free deposit operations 
+     * @param DateTime fromDate
+     * @param DateTime toDate 
+     * @param Guid transferGroupId 
+     * @param Bool onlyWithErrors
+     * @param Guid merchantId 
+     * @param Guid sessionToken
+     */
+    public function GetFreeDepositOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken ){
+        $methodName = "/Data/GetFreeDepositOperations";
+
+        $data = [
+            "FromDate" => $fromDate,
+            "ToDate" => $toDate,
+            "TransferGroupId" => $transferGroupId,
+            "OnlyWithErrors" => $onlyWithErrors,
+            "MerchantId" => $merchantId, 
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    
+    /**
+     * gets a list if Free deposit operations 
+     * @param DateTime fromDate
+     * @param DateTime toDate 
+     * @param Guid transferGroupId 
+     * @param Bool onlyWithErrors
+     * @param Guid merchantId 
+     * @param Guid sessionToken
+     */
+    public function GetFreeCollectionOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken){
+        $methodName = "/Data/GetFreeCollectionOperations";
+
+        $data = [
+            "FromDate" => $fromDate,
+            "ToDate" => $toDate,
+            "TransferGroupId" => $transferGroupId,
+            "OnlyWithErrors" => $onlyWithErrors,
+            "MerchantId" => $merchantId, 
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    /**
+     * gets a specific Merchant by it's External identification
+     * @param Guid externalSystemId 
+     * @param Guid externalSystemGroupId 
+     * @param Guid sessionToken
+     */
+    public function GetMerchantsByExternalId($externalSystemId, $externalSystemGroupId, $sessionToken){
+        $methodName = "/Data/GetMerchantsByExternalId";
+
+        $data = [
+            "ExternalSystemId" => $externalSystemId,
+            "ExternalSystemGroupId" => $externalSystemGroupId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    
+    /**
+     * Force a payment proccess 
+     * @param Guid paymentId 
+     * @param Guid sessionToken
+     */
+    public function ForcePaymentProcess($paymentId, $sessionToken){
+        $methodName = "/Data/ForcePaymentProcess";
+
+        $data = [
+            "PaymentId" => $paymentId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    
+    /**
+     * Login using a client id 
+     * @param Guid clientId 
+     * @param Guid loginsUserRelationsId, 
+     * @param String username
+     * @param String password 
+     * @param Guid sessionToken
+     */
+    public function Login($clientId, $loginsUserRelationsId, $username, $password, $sessionToken){
+        $methodName = "/Data/Login";
+
+        $data = [
+            "ClientIdUsername" => $clientId,
+            "LoginsUserRelationsId" => $loginsUserRelationsId,
+            "Username" => $username,
+            "Password" => $password,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Gets a list of login access.
+     * @param Guid clientId 
+     * @param String username
+     * @param String password 
+     * @param Guid sessionId   
+     */
+    public function GetLoginAccessList($clientId, $username, $password, $sessionToken){
+        $methodName = "/Data/GetLoginAccessList";
+
+        $data = [
+            "ClientId" => $clientId,
+            "Username" => $username, 
+            "Password" => $password,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * get's a public droin dropin token 
+     * @param Guid ClientId
+     * @param Guid billId
+     * @param double amount
+     * @param int transferType
+     * @param int dropInAuthorizedPaymentMethod
+     * @param String externalReferenceNumber
+     * @param Bool showCustomerExistingPaymentMethods
+     * @param int language
+     * @param int expirationDate
+     * @param String Title
+     * @param String description
+     * @param DateTime paymentDueDate
+     * @param Guid merchantId
+     * @param Guid sessionToken
+     * 
+     */
+    public function GetDropInPublicToken(
+        $clientId, 
+        $billId, 
+        $amount, 
+        $transferType, 
+        $dropInAuthorizedPaymentMethod, 
+        $externalReferenceNumber, 
+        $showCustomerExistingPaymentMethods, 
+        $language, 
+        $expirationDays, 
+        $title, 
+        $description, 
+        $paymentDueDate, 
+        $merchantId,
+        $sessionToken){
+        $methodName = "/Data/GetDropInPublicToken";
+
+        $data = [
+            "CustomerId" => $clientId,
+            "BillId"=> $billId, 
+            "Amount" => $amount,
+            "TransferType" => $transferType, 
+            "DropInAuthorizedPaymentMethod" => $dropInAuthorizedPaymentMethod, 
+            "ExternalReferenceNumber" => $externalReferenceNumber,
+            "ShowCustomerExistingPaymentMethods" => $showCustomerExistingPaymentMethods,
+            "Language" => $language, 
+            "ExpirationDays" => $expirationDays,
+            "Title" => $title, 
+            "Description" => $description, 
+            "PaymentDueDate" => $paymentDueDate, 
+            "MerchantId" => $merchantId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    /**
+     * Add new DAS provider for a merchant
+     * @param Guid merchantId
+     * @param int DasProviderType
+     * @param Array DasProvicerQuebec
+     * @param Array DasProvicerCanada
+     * @param Guid sessionToken
+     */
+    public function AddNewDasProvider($merchantId, $DasProviderType, $DasProviderQuebec,$DasProviderCanada, $sessionToken){
+        $methodName = "/Data/AddNewDasProvider";
+
+        $data = [ 
+            "MerchantId" => $merchantId,
+            "DasProviderType"=> $DasProviderType, 
+            "DasProviderQuebec" => $DasProviderQuebec,
+            "DasProviderCanada" => $DasProviderCanada, 
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    
+    /**
+     * Add new DAS payment to a DAS provider
+     * @param Guid merchantId
+     * @param Guid DasProviderId
+     * @param int DasProviderType
+     * @param Array DasProvicerQuebec
+     * @param Array DasProvicerCanada
+     * @param Guid sessionToken
+     */
+    public function AddNewDasPayment($merchantId, $DasProviderId, $DasPaymentProviderType, $DasPaymentCanada, $DasPaymentQuebec, $sessionToken){
+        $methodName = "/Data/AddNewDasPayment";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "DasProviderId" => $DasProviderId,
+            "DasPaymentProviderType" => $DasPaymentProviderType,
+            "DasPaymentCanada" => $DasPaymentCanada,
+            "DasPaymentQuebec" => $DasPaymentQuebec,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    /**
+     * List all DAS providers for a merchant
+     * List all merchant DAS providers
+     * @param Guid merchantId 
+     * @param Guid sessionToken
+     */
+    public function ListDasProviders($merchantId, $sessionToken){
+        $methodName = "/Data/ListDasProviders";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * List all DAS payment for a DAS provider
+     * @param Guid merchantId 
+     * @param Guid DasProviderId
+     * @param Guid sessionToken
+     */
+    public function ListDasPayments($merchantId, $DasProviderId, $sessionToken){
+        $methodName = "/Data/ListDasPayments";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "DasProviderId" => $DasProviderId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+    
+    /**
+     * get's a list of Services 
+     * @param Guid MerchantId
+     * @param Guid sessionToken
+     */
+    public function ListServices($merchantId, $sessionToken){
+        $methodName = "/Data/ListServices";
+
+        $data = [
+            "MerchantId" => $merchantId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * gets a sepecific Service detail
+     * @param Guid ServiceId 
+     * @param Guid sessionToken
+     */
+    public function GetService($serviceId, $sessionToken){
+        $methodName = "/Data/GetService";
+
+        $data = [
+            "ServiceId" => $serviceId,
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+    /**
+     * Creates a payment for a bill
+     * @param Guid billId The Bill to Create the payment for.
+     *  @param bool setPaymentCustomerFromBill 
+     *  @param String CustomerEmail
+     *  @param Array paymentInfo
+     *  @param String externalReferenceId
+     *  @param bool askForCustomerConsent
+     *  @param Bool safetyToBreakIfOverRemainingBillAmount
+     *  @param int autorizedPaymentMethod
+     *  @param Bool doNotSendEmail
+     *  @param String statementDescription
+     *  @param Guid sessionToken 
+     */
+    public function CreatePayment($billId, $setPaymentCustomerFromBill, $CustomerEmail, $paymentInfo, $externalReferenceId, $askForCustomerConsent, $safetyToBreakIfOverRemainingBillAmount, $autorizedPaymentMethod, $doNotSendEmail, $statementDescription, $sessionToken){
+        $methodName = "/Data/CreatePayment";
+
+        $data = [
+            "BillId" => $billId,
+            "SetPaymentCustomerFromBill" => $setPaymentCustomerFromBill,
+            "CustomerEmail" => $CustomerEmail,
+            "PaymentInfo" => $paymentInfo,
+            "ExternalReferenceId" => $externalReferenceId,
+            "AskForCustomerConsent" => $askForCustomerConsent,
+            "SafetyToBreakIfOverRemainingBillAmount" => $safetyToBreakIfOverRemainingBillAmount,
+            "AutorizedPaymentMethod" => $autorizedPaymentMethod,
+            "DoNotSendEmail" => $doNotSendEmail,
+            "StatementDescription" => $statementDescription,
+            
+            "SessionToken" => $sessionToken
+        ];
+        
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
 }
