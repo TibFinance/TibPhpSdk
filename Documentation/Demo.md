@@ -235,9 +235,4 @@ $result = $serverCaller->createPayement($billId, $setPaymentCustomerFromBill,$cu
 ```
 > PaymentFlow.AnonymousNeedCustomerEmailPropertySet Makes the CustomerEmail Required
 
-Then Call the create payment method.
-```
- var result = TibInvoker.Portal.CreatePayment(paymentArgs)
-```
-
 By this you now have created a payment for a bill.
