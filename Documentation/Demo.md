@@ -14,7 +14,7 @@ First and foremost you'll need to have a session token to be able to make calls 
 *The client ID is required for the session creation call. This identification is provided by TIB during the account opening*
 ```
 	$ClientId = ""; // the Client Id. 
-	$userName = ""; // a user name
+	$userName = ""; // a username
 	$password = ""; /: a password
 
 	$serverCaller->CreateSession($ClientId, $userName, $password) 
