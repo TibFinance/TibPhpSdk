@@ -1,7 +1,7 @@
 
 # Tib PHP Sdk 
 
-This is a technical document on how to use the Tib PHP Sdk .
+This is a technical document  on how to use the Tib PHP Sdk .
 
 ## Content Table  
 
@@ -157,7 +157,7 @@ $adress = [
     "CountryId" => 1, // CountryIdEnum.USA
     "PostalZipCode" => "_________", 
     "ProvinceStateId" => 58, // ProvinceStateIdEnum.US_Alabama
-    "StreetAddress" => "__________"  
+    "StreetAddress" => "_________"  
 ]
 ```
 

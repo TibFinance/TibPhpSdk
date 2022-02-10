@@ -20,7 +20,7 @@
 	* [List payment methods](#list-payment-methods)
 	* [Change the default payment method of a customer](#change-the-default-payment-method-of-a-customer).
 	* [Delete payment method](#delete-payment-method).
-	* 
+	
 * #### Payments / Transfers
 	* [Create Bill](#create-bill).
 	* [List Bill](#list-bill).
@@ -88,8 +88,7 @@ $result = $serverCaller->getCustomer($customerId,$sessionToken);
 ### List the customers based on external identification
 ``` 
 $customerExternalId = "C132-344"; // customer ExternalId
-$result = $serverCaller->getCustomersByExternalId($customerExternalId,$sessionToken);
-        
+$result = $serverCaller->getCustomersByExternalId($customerExternalId,$sessionToken);     
 ```
 
 ### Modify an existing customer
@@ -385,14 +384,42 @@ The first is a container of white labeling Values for a single entity (client, s
 
 The Second one represents the values that a single whitelabeling cssProperty going to have.
 
+*Note: To Chenge the logo the api accepts images as a base64 string so you will need to implement your own imageToBase64 and the pass the string to the api.*
+
+The WhiteLabeling only support a number of parameters 
+
+This is the list o f the properties that you can customize 
+```
+"company-name"
+"logo-secound-part-color"
+"logo-first-Part-color"
+"logo-background"
+"radio-button-color"
+"checbox-color"
+"sidenav-item-active-color"
+"sidenav-button-trigger-color"
+"button-color"
+"logo"
+"accepte-button-color"
+"reject-button-color"
+"navbar-backgournd-color"
+"icon-size"
+"title-font-family"
+"title-font-size"
+"subtitle-font-family"
+"subtitle-font-size"
+"subtitle-text-color"
+```
+you pass one of those to the cssProperty and pass the value you want it to be.
+
 ### Set WhiteLabeling
 ```
 $id = $clientId;  // entity Id ; 
 $level = 3; // entity level; 
 $whiteLabelingData = [
 	[
-		"CssPropery" => "background-color",
-		"CssValue" => "black"
+		"CssPropery" => "logo",
+		"CssValue" => "base64string"
 	],
 	[
 		"CssPropery" => "button-color",

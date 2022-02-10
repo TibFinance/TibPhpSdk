@@ -103,7 +103,7 @@ Currently the TibFinance Supports 3 payment Method Types:
 * Bank account
 * Interac 
 
-*NOTE Different than the .net SDK qnd the .net core SDK where each payment method creation had it's own signature*
+*NOTE Different From the .net SDK and the .net core SDK where each payment method creation had it's own signature*
 *here all the payment methods are created using the same Method name the key difference here is `$type` variable*
 *the `$type` variable can have only one of the 3 values which are the 3 different payment methods suported by Tib Api*
 ```
