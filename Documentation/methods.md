@@ -40,6 +40,12 @@
 
 * #### Merchants
 	* [Merchant basic information object](#merchant-basic-information-object).
+	* [Create new merchant](#create-new-merchant).
+	* [Get merchant info ](#get-merchant-info)
+	* [Update merchant](#update-merchant).
+	* [Delete merchant](#delete-merchant).
+	* [Update merchant basic info](#update-merchant-basic-info).
+	* [Update merchant account info](#update-Merchant-Account-Info).
 
 * #### Whitelabeling (UI Looks)
 	* [Set WhiteLabeling](#set-whiteLabeling)
@@ -367,6 +373,131 @@ $result = $serverCaller->listExecutedOperations($fromDate, $toDate, $transferTyp
 
 ```
 
+## Merchant Methods
+
+### Create new merchant
+```
+$merchantInfo = [
+	"EmailCopyTo" => "",
+	"ExternalSystemId" => "",
+	"Email" => "",
+	"FavoriteProvider" => 0,
+	"Language" => 0,
+	"MerchantCurrency" => 0,
+	"MerchantDescription" => "",
+	"MerchantName" => "",
+	"PhoneNumber" => "",
+	"ExternalSystemGroupId" => "",
+	"Address" => [
+		"AddressCity" => "",
+		"CountryId" => 0,
+		"PostalZipCode" => "",
+		"ProvinceStateId" => 0,
+		"StreetAddress" => ""
+	],
+	"Account" => [
+		"AccountName" => "",
+		"AccountNumber" => "",
+		"BankNumber" => "",
+		"CheckDigit" => "",
+		"InstitutionNumber" => "",
+		"Owner" => ""
+	],
+]; 
+$result = $serverCaller->CreateMerchant($merchantInfo, $sessionToken, $serviceId);
+```
+### Get merchant info
+``` 
+$merchantId = ""; 
+$result = $serverCaller->GetMerchant($merchantId, $sessionToken);
+```
+### Update merchant
+``` 
+$merchantId = ""; 
+$merchantInfo = [
+	"MerchantName" => "",
+	"ExternalSystemId" => "",
+	"ExternalSystemGroupId" => "",
+	"MerchantCurrency" => "",
+	"Language" => "",
+	"Email" => "",
+	"EmailCopyTo" => "",
+	"PhoneNumber" => "",
+	"MerchantDescription" => "",
+	"Address" => [    
+		"StreetAddress" => "",
+		"AddressCity" => "",
+		"ProvinceStateId" => 1,
+		"CountryId" => 1,
+		"PostalZipCode" => "",
+	],
+	"FavoriteProvider" => "",
+	"Account" => [
+		"AccountName" => "",
+		"Owner" => "",
+		"BankNumber" => "",
+		"InstitutionNumber" => "",
+		"AccountNumber" => "",
+		"CheckDigit" => "",
+		"FullAccountNumber" => "",
+		"AccountNumberWithCheckDigit" => "",
+		"PreviewString" => "",
+	],
+]; 
+$result  = $serverCaller->SaveMerchant($merchantId, $merchantInfo, $sessionToken);
+```
+### Delete merchant
+```
+var deleteMerchantArgs = new Tib.Api.Model.Merchant.DeleteMerchantArgs
+{
+	SessionToken = _session,
+	MerchantId = _merchant
+};
+var result = TibInvoker.Portal.DeleteMerchant(deleteMerchantArgs);
+```
+### Update merchant basic info 
+```
+$merchantId = ""; 
+$merchantInfo = [
+	"MerchantName" => "",
+	"ExternalSystemId" => "",
+	"ExternalSystemGroupId" => "",
+	"MerchantCurrency" => "",
+	"Language" => "",
+	"Email" => "",
+	"EmailCopyTo" => "",
+	"PhoneNumber" => "",
+	"MerchantDescription" => "",
+	"Address" => [    
+		"StreetAddress" => "",
+		"AddressCity" => "",
+		"ProvinceStateId" => 1,
+		"CountryId" => 1,
+		"PostalZipCode" => "",
+	],
+	"FavoriteProvider" => ""
+];
+$result  = $serverCaller->SaveMerchantBasicInfo($merchantId, $merchantInfo, $sessionToken);
+```
+### Update merchant account info
+
+```
+$merchantId = ""; 
+$merchantInfo = [
+	"Account" => [
+		"AccountName" => "",
+		"Owner" => "",
+		"BankNumber" => "",
+		"InstitutionNumber" => "",
+		"AccountNumber" => "",
+		"CheckDigit" => "",
+		"FullAccountNumber" => "",
+		"AccountNumberWithCheckDigit" => "",
+		"PreviewString" => "",
+	],
+];
+$result  = $serverCaller->SaveMerchantAccountInfo($merchantId, $merchantInfo, $sessionToken);
+```
 
 ## Whitelabeling (UI Looks)
 
