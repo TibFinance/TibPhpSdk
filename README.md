@@ -43,9 +43,10 @@ Initiat the Server Caller Class
 
 Then set the api Url 
 
-*the link can be either the Sandbox or the production Envirement (we are using the sandbox version in this code sample)*
+``` $serverCaller->setUrl($siteUrl) ```  
 
-``` $serverCaller->setUrl("theApiUrl") ```  
+
+*the `$siteUrl` can be either the Sandbox or the production Envirement (we are using the sandbox version in this code sample)*
 
 Then Create a session
 
