@@ -37,6 +37,9 @@
 	* [Delete Recuring process](#delete-recuring-process).
 	* [Reporting of Operation](#reporting-of-operation)
 	* [List Executed Operations](#list-executed-operations).
+	* [List Transfers](#list-transfers).
+	* [List Transfers Fast](#list-transfers-fast)
+	* [List transfers For Bill Fast](#list-transfers-for-bill-fast).
 
 * #### Merchants
 	* [Merchant basic information object](#merchant-basic-information-object).
@@ -372,6 +375,43 @@ $dateType = "";
 $result = $serverCaller->listExecutedOperations($fromDate, $toDate, $transferType, $transferGroupId, $onlyWithErrors, $merchantId, $dateType, $sessionToken);
 
 ```
+### List Transfers
+```
+ 	$from = new DateTime(""); 
+	$to = new DateTime(""); 
+	$exGroupId = ""; 
+	$lvlFilterId = ""; 
+	$markResolvedOnly = false;
+	$paymentFilterLvl = 2 ;// this Ranges from 1 to ...
+	$transferType = 1 ;// this Ranges from 1 to 7
+	$transferGroupId  = "" ; 
+	$onlywithErrors = false;
+	$result = $serverCaller->ListTransfers($sessionToken, $from, $to, $exGroupId, $lvlFilterId, $markResolvedOnly,$paymentFilterLvl, $transferType, $transferGroupId, $onlywithErrors);
+	ResponseHandler($result);
+```
+
+### List Transfers Fast
+```
+	$from = new DateTime(""); 
+	$to = new DateTime(""); 
+	$exGroupId = ""; 
+	$merchantId = ""; 
+	$markResolvedOnly = false;
+	$transferType = 1 ;// this Ranges from 1 to 6 and is different From the Enum used in ListTransfers (List Transfers Uses TransferTypeFlags and This Uses TransferTypeEnum.)
+	$transferGroupId  = "" ; 
+	$onlywithErrors = false;
+	$result = $serverCaller->ListTransfersFast($sessionToken, $merchantId, $from, $to, $exGroupId, $markResolvedOnly, $transferType, $transferGroupId, $onlywithErrors);
+	ResponseHandler($result);
+
+```
+
+### List transfers For Bill Fast
+```
+	$merchantId = ""; 
+	$bill = ""; 
+	$result = $serverCaller->ListTransfersForBillFast($sessionToken, $merchantId, $billId);
+```
+
 
 ## Merchant Methods
 
