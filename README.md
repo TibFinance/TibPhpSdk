@@ -26,7 +26,6 @@ Before you start Using the Sdk you'll need to know some basic concept the We Use
 
 To understand how to use the API, you must understand the Different objects of the application. 
 
-For details See the pdf [Documentation](./Documentation/TIB%20API%20ENGLISH%20VERSION_2_1.pdf).
 
 ## Environments
 
