@@ -583,7 +583,7 @@ class ServerCaller
     }
 
     /**
-     * Create Direct Deposit
+     * Create Direct Deposit (Obsolete (This Method Is Obsolete, Use CreateFreeOperation.))
      * @param Guid $originMerchantId
      * @param array $destinationAccount
      * @param date $depositDueDate

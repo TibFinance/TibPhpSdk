@@ -280,7 +280,7 @@ $paymentInfo = [
 $result = $serverCaller->createPayement($billId, $setPaymentCustomerFromBill, $paymentInfo,$sessionToken,$sessionToken);
 ```
 
-### Create Direct Deposit
+### Create Direct Deposit (this Methods is obsolete, Use CreateFreeOperation) 
 ```
 $originMerchantId = $merchantId;
 $destinationAccount = [
