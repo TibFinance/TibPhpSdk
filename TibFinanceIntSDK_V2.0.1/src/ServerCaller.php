@@ -1014,33 +1014,6 @@ class ServerCaller
     }
 
     /**
-     * Gets list deposit operations 
-     * @param Guid merchantexternalGroupId
-     * @param DateTime fromDate
-     * @param DateTime todate
-     * @param Guid transferGroupId
-     * @param Bool onlyWithErrors
-     * @param Guid merchantId
-     * @param Guid sessionToken
-     */
-    public function GetDepositOperations($merchantExternalGroupId, $fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken)
-    {
-        $methodName = "/Data/GetDepositOperations";
-
-        $data = [
-            "MerchantExternalGroupId" => $merchantExternalGroupId,
-            "FromDate" => $fromDate,
-            "ToDate" => $toDate,
-            "TransferGroupId" => $transferGroupId,
-            "OnlyWithErrors" => $onlyWithErrors,
-            "MerchantId" => $merchantId,
-            "SessionToken" => $sessionToken
-        ];
-
-        return $this->tibCrypto->performCall($methodName, $data);
-    }
-
-    /**
      * Marks a payment as resolved
      * @param Array listOfPayment
      * @param Guid sessionToken
@@ -1057,55 +1030,6 @@ class ServerCaller
         return $this->tibCrypto->performCall($methodName, $data);
     }
 
-    /**
-     * gets a list if Free deposit operations 
-     * @param DateTime fromDate
-     * @param DateTime toDate 
-     * @param Guid transferGroupId 
-     * @param Bool onlyWithErrors
-     * @param Guid merchantId 
-     * @param Guid sessionToken
-     */
-    public function GetFreeDepositOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken)
-    {
-        $methodName = "/Data/GetFreeDepositOperations";
-
-        $data = [
-            "FromDate" => $fromDate,
-            "ToDate" => $toDate,
-            "TransferGroupId" => $transferGroupId,
-            "OnlyWithErrors" => $onlyWithErrors,
-            "MerchantId" => $merchantId,
-            "SessionToken" => $sessionToken
-        ];
-
-        return $this->tibCrypto->performCall($methodName, $data);
-    }
-
-    /**
-     * gets a list if Free deposit operations 
-     * @param DateTime fromDate
-     * @param DateTime toDate 
-     * @param Guid transferGroupId 
-     * @param Bool onlyWithErrors
-     * @param Guid merchantId 
-     * @param Guid sessionToken
-     */
-    public function GetFreeCollectionOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken)
-    {
-        $methodName = "/Data/GetFreeCollectionOperations";
-
-        $data = [
-            "FromDate" => $fromDate,
-            "ToDate" => $toDate,
-            "TransferGroupId" => $transferGroupId,
-            "OnlyWithErrors" => $onlyWithErrors,
-            "MerchantId" => $merchantId,
-            "SessionToken" => $sessionToken
-        ];
-
-        return $this->tibCrypto->performCall($methodName, $data);
-    }
     /**
      * gets a specific Merchant by it's External identification
      * @param Guid externalSystemId 

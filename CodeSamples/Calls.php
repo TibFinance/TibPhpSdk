@@ -469,18 +469,7 @@ switch ($_GET["action"]) {
         $result = $serverCaller->GetClientSettings($clientId, $sessionToken);
         ResponseHandler($result);
         break;
-    case "GetDepositOperations":
-        $merchantExternalGroupId = "";
-        $fromDate = "";
-        $toDate = "";
-        $transferGroupId = "";
-        $onlyWithErrors = false;
-        $merchantId = "";
-        $sessionToken = "";
-        $result = $serverCaller->GetDepositOperations($merchantExternalGroupId, $fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken);
-        ResponseHandler($result);
-        break;
-
+  
     case "MarkPaymentResolved":
         $listOfPayments = [
             "", "" // list of Guid "Payment Ids"
@@ -489,25 +478,6 @@ switch ($_GET["action"]) {
         ResponseHandler($result);
         break;
 
-    case "GetFreeDepositOperations":
-        $formDate = "";
-        $todate = "";
-        $transferGroupId = "";
-        $onlyWithErrors = false;
-        $merchantId = "";
-        $result = $serverCaller->GetFreeDepositOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken);
-        ResponseHandler($result);
-        break;
-
-    case "GetFreeCollectionOperations":
-        $formDate = "";
-        $todate = "";
-        $transferGroupId = "";
-        $onlyWithErrors = false;
-        $merchantId = "";
-        $result = $serverCaller->GetFreeCollectionOperations($fromDate, $toDate, $transferGroupId, $onlyWithErrors, $merchantId, $sessionToken);
-        ResponseHandler($result);
-        break;
 
     case "GetMerchantsByExternalId":
         $externalSystemId = ""; // the merchants External Id
