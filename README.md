@@ -32,7 +32,7 @@ For details See the pdf [Documentation](https://tibfinance.github.io/). Or get t
 
 Calls to the service are done via a WEB service. There are two URLs for the service:
 * Production: https://portal.tib.finance    
-* Development: http://sandboxportal.tib.finance
+* Development [(Sandbox)](.\Documentation\Sandbox.md) : http://sandboxportal.tib.finance
 
 ## Set Up 
 ` Before you using the SDK you need to set the api url up and get a session id. `
