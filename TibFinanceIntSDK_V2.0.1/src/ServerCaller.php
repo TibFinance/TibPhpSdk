@@ -56,7 +56,7 @@ class ServerCaller
      *
      * @return json
      */
-    public function createCustomer($customerName, $customerExternalId, $language, $customerDescription, $serviceId, $SessionToken)
+    public function createCustomer($customerName, $customerExternalId, $language, $customerEmail, $customerDescription, $serviceId, $SessionToken)
     {
         $methodName = "/Data/CreateCustomer";
 
@@ -67,7 +67,8 @@ class ServerCaller
                 "CustomerName" => $customerName,
                 "CustomerExternalId" => $customerExternalId,
                 "Language" => $language,
-                "CustomerDescription" => $customerDescription
+                "CustomerDescription" => $customerDescription, 
+                "CustomerEmail" => $customerEmail
             ]
         ];
 
@@ -143,7 +144,7 @@ class ServerCaller
      *
      * @return json
      */
-    public function saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerDescription, $SessionToken)
+    public function saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerEmail, $customerDescription, $SessionToken)
     {
         $methodName = "/Data/SaveCustomer";
 
@@ -153,7 +154,8 @@ class ServerCaller
                 "CustomerName" => $customerName,
                 "CustomerExternalId" => $customerExternalId,
                 "Language" => $language,
-                "CustomerDescription" => $customerDescription
+                "CustomerDescription" => $customerDescription,
+                "CustomerEmail" => $customerEmail
             ],
             "SessionToken" => $SessionToken
         ];

@@ -66,8 +66,9 @@ switch ($_GET["action"]) {
         $customerExternalId = "C132-344";
         $language = 1;
         $customerDescription = "Customer created from new PHP SDK";
+        $customerEmail = "customerEmail@examle.com";
 
-        $result = $serverCaller->createCustomer($customerName, $customerExternalId, $language, $customerDescription, $serviceId, $sessionToken);
+        $result = $serverCaller->createCustomer($customerName, $customerExternalId, $language, $customerEmail, $customerDescription, $serviceId, $sessionToken);
         ResponseHandler($result);
         break;
 
@@ -77,7 +78,7 @@ switch ($_GET["action"]) {
         break;
 
     case "GetCustomer":
-        $customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
+        $customerId = "90cb97a3-6ff1-4df7-8cfe-e4525a12e529";
 
         $result = $serverCaller->getCustomer($customerId, $sessionToken);
         ResponseHandler($result);
@@ -96,8 +97,9 @@ switch ($_GET["action"]) {
         $customerExternalId = "c123-55";
         $language = 1;
         $customerDescription = "Customer updated by new PHP SDK";
+        $customerEmail = "customerEmail@examle.com";
 
-        $result = $serverCaller->saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerDescription, $sessionToken);
+        $result = $serverCaller->saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerEmail, $customerDescription, $sessionToken);
         ResponseHandler($result);
         break;
 
