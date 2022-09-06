@@ -643,12 +643,13 @@ class ServerCaller
         $amount,
         $referenceNumber,
         $statementDescription,
-        $SessionToken
+        $SessionToken, 
+        $TransferDirection
     ) {
         $methodName = "/Data/CreateDirectInteracTransaction";
 
         $data = [
-            "OriginMerchantId" => $originMerchantId,
+            "MerchantId" => $originMerchantId,
             "InteracInformation" => $interacInformation,
             "DepositDueDate" => $depositDueDate,
             "Currency" => $currency,
@@ -656,7 +657,9 @@ class ServerCaller
             "Amount" => $amount,
             "ReferenceNumber" => $referenceNumber,
             "StatementDescription" => $statementDescription,
-            "SessionToken" => $SessionToken
+            "SessionToken" => $SessionToken, 
+            "TransferDirection" => $TransferDirection
+            
         ];
 
         return $this->tibCrypto->performCall($methodName, $data);

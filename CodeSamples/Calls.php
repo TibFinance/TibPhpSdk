@@ -11,8 +11,8 @@ $serverCaller->SetUrl("http://sandboxportal.tib.finance");
 $userName = "sdkdev";
 $password = "Test123!";
 $clientId = "4671a4c9-4367-4934-bb23-a8886cebd028";
-$serviceId = "038D7171-BF23-4F3C-9E78-CF6342624FC7";
-$merchantId = "EA34F2C6-36B2-4513-973E-A2C91E7985D3";
+$serviceId = "038d7171-bf23-4f3c-9e78-cf6342624fc7";
+$merchantId = "ea34f2c6-36b2-4513-973e-a2c91e7985d3";
 $sessionToken = "eefbcf1d-3834-4739-aa61-5d8fb219a04a";
 
 if (isset($_COOKIE["SessionIdToken"])) {
@@ -309,22 +309,22 @@ switch ($_GET["action"]) {
         break;
 
     case "CreateDirectInteracTransaction":
-        $originMerchantId = $merchantId;
+        $originMerchantId = "ea34f2c6-36b2-4513-973e-a2c91e7985d3";
         $interacInformation = [
             "Description" => " interac Operation Description", 
             "TargetEmailAddress" => "Email@example.ca", 
-            "TargetMobilePhoneNumber" => "031248903284", 
+            "TargetMobilePhoneNumber" => "0312489032", 
             "Owner" => "Jeff Testing",
             "InteracQuestion" => "Question 01 ?",
-            "InteracAnswer" => "Answer 01"
+            "InteracAnswer" => "Answer"
         ];
         $depositDueDate = "2021-02-16T16:10:19.000Z";
         $currency = 1;
         $language = 1;
         $amount = 1.22;
         $referenceNumber = "C12343-324";
-        
-        $statementDescription = "this is a description";
+        $TransferDirection = 1;
+        $statementDescription = "thsksj";
 
         $result = $serverCaller->createDirectInteracTransaction(
             $originMerchantId, 
@@ -335,7 +335,8 @@ switch ($_GET["action"]) {
             $amount, 
             $referenceNumber, 
             $statementDescription,
-            $sessionToken
+            $sessionToken,
+            $TransferDirection
         );
         ResponseHandler($result);
         break;
@@ -795,7 +796,7 @@ switch ($_GET["action"]) {
         break;
 
     case "GetMerchant":
-        $merchantId = "";
+        $merchantId = "ea34f2c6-36b2-4513-973e-a2c91e7985d3";
         $result = $serverCaller->GetMerchant($merchantId, $sessionToken);
         ResponseHandler($result);
         break;
