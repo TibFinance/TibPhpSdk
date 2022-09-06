@@ -187,14 +187,14 @@ class ServerCaller
      * @param Guid SessionToken
      * @param Guid ServiceId
      */
-    public function  CreateMerchant($merchantInfo, $serviceId, $sessionToken)
+    public function  CreateMerchant($merchantInfo, $serviceId, $SessionToken)
     {
         $methodName = "/Data/CreateMerchant";
 
         $data = [
             "ServiceId" => $serviceId,
             "MerchantInfo" => $merchantInfo,
-            "SessionToken" => $sessionToken
+            "SessionToken" => $SessionToken
         ];
 
         return $this->tibCrypto->performCall($methodName, $data);
@@ -642,6 +642,7 @@ class ServerCaller
         $language,
         $amount,
         $referenceNumber,
+        $statementDescription,
         $SessionToken
     ) {
         $methodName = "/Data/CreateDirectInteracTransaction";
@@ -654,6 +655,7 @@ class ServerCaller
             "Language" => $language,
             "Amount" => $amount,
             "ReferenceNumber" => $referenceNumber,
+            "StatementDescription" => $statementDescription,
             "SessionToken" => $SessionToken
         ];
 
@@ -888,7 +890,7 @@ class ServerCaller
      * @param array $whiteLabelingData
      * @return json
      */
-    public function DeleteWhiteLabeling($id, $level, $whiteLabelingData, $SessionToken)
+    public function UpdateWhiteLabelingData($id, $level, $whiteLabelingData, $SessionToken)
     {
         $methodName = "/Data/UpdateWhiteLabelingData";
 

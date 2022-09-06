@@ -50,17 +50,13 @@
       <strong>Merchants</strong>
       <ul>
         <li><a href="./Calls.php?action=CreateMerchant" targer="_blank">Create a Merchants</a></li>
-        <li><a href="./Calls.php?action=ListCustomers" targer="_blank">List Merchants </a></li>
-        <li><a href="./Calls.php?action=GetCustomer" targer="_blank">Get merchant </a></li>
-        <li>
-          <a href="./Calls.php?action=GetCustomersByExternalId" targer="_blank">
-            save merchant
-          </a>
-        </li>
-        <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Basic Info</a></li>
-        <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Account Info</a></li>
+        <li><a href="./Calls.php?action=ListMerchants" targer="_blank">List Merchants </a></li>
+        <li><a href="./Calls.php?action=GetMerchant" targer="_blank">Get merchant </a></li>
+       
+        <li><a href="./Calls.php?action=SaveMerchant" targer="_blank">Modify an existing Merchant Basic Info</a></li>
+        <li><a href="./Calls.php?action=SaveMerchant" targer="_blank">Modify an existing Merchant Account Info</a></li>
         <!-- <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Basic Info</a></li> -->
-        <li><a href="./Calls.php?action=DeleteCustomer" targer="_blank">Delete a Merchant</a></li>
+        <li><a href="./Calls.php?action=DeleteMerchant" targer="_blank">Delete a Merchant</a></li>
       </ul>
     </li>
     <li class="li-group">

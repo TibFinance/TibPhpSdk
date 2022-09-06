@@ -13,7 +13,7 @@ $password = "Test123!";
 $clientId = "4671a4c9-4367-4934-bb23-a8886cebd028";
 $serviceId = "038D7171-BF23-4F3C-9E78-CF6342624FC7";
 $merchantId = "EA34F2C6-36B2-4513-973E-A2C91E7985D3";
-$sessionToken = "33043b6b-6b1f-4e5b-b8dc-1db229c93b1f";
+$sessionToken = "eefbcf1d-3834-4739-aa61-5d8fb219a04a";
 
 if (isset($_COOKIE["SessionIdToken"])) {
     $sessionToken = $_COOKIE["SessionIdToken"];
@@ -37,7 +37,7 @@ function ResponseHandler($responseObj)
         if ($responseObj->HasError) {
             var_dump_pre($responseObj->Messages);
             if ($responseObj->Messages == "Need an authenticated user to perform this action") {
-                header('location: ./Calls.php?action=CreateSession');
+                // header('location: ./Calls.php?action=CreateSession');
             }
         } else {
             var_dump_pre($responseObj);
@@ -78,7 +78,7 @@ switch ($_GET["action"]) {
         break;
 
     case "GetCustomer":
-        $customerId = "90cb97a3-6ff1-4df7-8cfe-e4525a12e529";
+        $customerId = "7fea36a6-a62f-44c1-97af-1a0b2b285b66";
 
         $result = $serverCaller->getCustomer($customerId, $sessionToken);
         ResponseHandler($result);
@@ -92,11 +92,11 @@ switch ($_GET["action"]) {
         break;
 
     case "SaveCustomer":
-        $customerId = "bf199033-53a1-48cd-8f17-04254d026ecd";
+        $customerId = "7fea36a6-a62f-44c1-97af-1a0b2b285b66";
         $customerName = "Customer 200 Updated";
         $customerExternalId = "c123-55";
         $language = 1;
-        $customerDescription = "Customer updated by new PHP SDK";
+        $customerDescription = "Customer created with Dotnet Sdk and updated by new PHP SDK";
         $customerEmail = "customerEmail@examle.com";
 
         $result = $serverCaller->saveCustomer($customerId, $customerName, $customerExternalId, $language, $customerEmail, $customerDescription, $sessionToken);
@@ -311,19 +311,32 @@ switch ($_GET["action"]) {
     case "CreateDirectInteracTransaction":
         $originMerchantId = $merchantId;
         $interacInformation = [
+            "Description" => " interac Operation Description", 
+            "TargetEmailAddress" => "Email@example.ca", 
+            "TargetMobilePhoneNumber" => "031248903284", 
             "Owner" => "Jeff Testing",
-            "AccountName" => "Personal bank account",
-            "BankNumber" => "003",
-            "InstitutionNumber" => "12345",
-            "AccountNumber" => "9876543"
+            "InteracQuestion" => "Question 01 ?",
+            "InteracAnswer" => "Answer 01"
         ];
         $depositDueDate = "2021-02-16T16:10:19.000Z";
         $currency = 1;
         $language = 1;
         $amount = 1.22;
         $referenceNumber = "C12343-324";
+        
+        $statementDescription = "this is a description";
 
-        $result = $serverCaller->createDirectDeposit($originMerchantId, $interacInformation, $depositDueDate, $currency, $language, $amount, $referenceNumber, $sessionToken);
+        $result = $serverCaller->createDirectInteracTransaction(
+            $originMerchantId, 
+            $interacInformation, 
+            $depositDueDate, 
+            $currency, 
+            $language, 
+            $amount, 
+            $referenceNumber, 
+            $statementDescription,
+            $sessionToken
+        );
         ResponseHandler($result);
         break;
     case "CreateTransactionFromRaw":
@@ -405,7 +418,7 @@ switch ($_GET["action"]) {
     case "GetWhiteLabeling":
         $id = $clientId;  // entity Id ; 
         $level = 3; // entity level; 
-        $result = $serverCaller->GetwhiteLabeling($id, $level, $sessionToken);
+        $result = $serverCaller->GetWhiteLabelingData($id, $level, $sessionToken);
         ResponseHandler($result);
         break;
     case "DeleteWhiteLabeling":
@@ -499,7 +512,7 @@ switch ($_GET["action"]) {
         $loginUserRelationsId = "";
         $username = "";
         $password = "";
-        $result = $serverCaller->Login($clientId, $loginUserRelationsId, $username, $password);
+        $result = $serverCaller->Login($clientId, $loginUserRelationsId, $username, $password, $sessionToken);
         break;
 
     case "GetLoginAccessList":
@@ -664,33 +677,35 @@ switch ($_GET["action"]) {
 
     case "CreateMerchant":
         $merchantInfo = [
-            "EmailCopyTo" => "",
-            "ExternalSystemId" => "",
-            "Email" => "",
-            "FavoriteProvider" => 0,
-            "Language" => 0,
-            "MerchantCurrency" => 0,
-            "MerchantDescription" => "",
-            "MerchantName" => "",
-            "PhoneNumber" => "",
-            "ExternalSystemGroupId" => "",
+            "EmailCopyTo" => "email@test.ca",
+            "ExternalSystemId" => "LP1526638F",
+            "Email" => "Email@Prod.ca",
+            "FavoriteProvider" => 1,
+            "Language" => 1,
+            "MerchantCurrency" => 1,
+            "MerchantDescription" => "this is the Merchant",
+            "MerchantName" => "Principal Merchant",
+            "PhoneNumber" => "1526349878",
+            "ExternalSystemGroupId" => "Grouppo01",
             "Address" => [
-                "AddressCity" => "",
-                "CountryId" => 0,
-                "PostalZipCode" => "",
-                "ProvinceStateId" => 0,
-                "StreetAddress" => ""
+                "AddressCity" => "city01",
+                "CountryId" => 1,
+                "PostalZipCode" => "qs23",
+                "ProvinceStateId" => 1,
+                "StreetAddress" => "dskfjkls"
             ],
             "Account" => [
-                "AccountName" => "",
-                "AccountNumber" => "",
+                "AccountName" => "Merchant Account Name",
+                "AccountNumber" => "123456789",
                 "BankNumber" => "",
-                "CheckDigit" => "",
+                "CheckDigit" => "12312",
                 "InstitutionNumber" => "",
-                "Owner" => ""
+                "Owner" => "this is the owner", 
+                "RoutingNumber" => "12345678" 
             ],
         ];
-        $result = $serverCaller->CreateMerchant($merchantInfo, $sessionToken, $serviceId);
+        $result = $serverCaller->CreateMerchant($merchantInfo, $serviceId, $sessionToken);
+        ResponseHandler($result);
         break;
 
     case "SaveMerchant":
@@ -786,7 +801,6 @@ switch ($_GET["action"]) {
         break;
 
     case "ListMerchants":
-        $serviceId = "";
         $result = $serverCaller->ListMerchants($serviceId, $sessionToken);
         ResponseHandler($result);
         break;
