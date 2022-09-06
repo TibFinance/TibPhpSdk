@@ -54,8 +54,8 @@
         <li><a href="./Calls.php?action=GetMerchant" targer="_blank">Get merchant </a></li>
         <li><a href="./Calls.php?action=GetMerchantsByExternalId" targer="_blank">Get merchant By Extrenal Id </a></li>
        
-        <li><a href="./Calls.php?action=SaveMerchant" targer="_blank">Modify an existing Merchant Basic Info</a></li>
-        <li><a href="./Calls.php?action=SaveMerchant" targer="_blank">Modify an existing Merchant Account Info</a></li>
+        <li><a href="./Calls.php?action=SaveMerchantBasicInfo" targer="_blank">Modify an existing Merchant Basic Info</a></li>
+        <li><a href="./Calls.php?action=SaveMerchantAccountInfo" targer="_blank">Modify an existing Merchant Account Info</a></li>
         <!-- <li><a href="./Calls.php?action=SaveCustomer" targer="_blank">Modify an existing Merchant Basic Info</a></li> -->
         <li><a href="./Calls.php?action=DeleteMerchant" targer="_blank">Delete a Merchant</a></li>
       </ul>
