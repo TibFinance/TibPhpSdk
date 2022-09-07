@@ -212,7 +212,7 @@ class ServerCaller
             "MarkResolvedOnly" => $markResolvedOnly,
             "PaymentFilterLevel" => $paymentFilterLevel,
             "TransferType" => $transferType,
-            "ToDate" >= $toDate,
+            "ToDate" => $toDate,
             "TransferGroupId" => $transferGroupId,
             "OnlyWithErrors" => $onlyWithErrors,
         ];
@@ -799,7 +799,10 @@ class ServerCaller
     {
         $methodName = "/Data/DeleteRecuringTransfer";
 
-        $data = ["RecuringTransferId" => $recuringTransferId];
+        $data = [
+            "SessionToken" => $SessionToken,
+            "RecuringTransferId" => $recuringTransferId
+        ];
 
         return $this->tibCrypto->performCall($methodName, $data);
     }
