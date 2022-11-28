@@ -965,7 +965,24 @@ class ServerCaller
         ];
 
         return $this->tibCrypto->performCall($methodName, $data);
-    }
+    } /**
+    * Set a client default service settings 
+    * @param Guid $clientId
+    * @param array $ServiceFeeSettings
+    * @return json
+    */
+   public function SetClientDefaultServiceSettings($clientId, $ServiceSettings, $SessionToken)
+   {
+       $methodName = "/Data/SetClientDefaultServiceSettings";
+
+       $data = [
+           "ClientId" => $clientId,
+           "ServiceFeeSettings" => $ServiceSettings,
+           "SessionToken" => $SessionToken
+       ];
+
+       return $this->tibCrypto->performCall($methodName, $data);
+   }
 
     /**
      * Create a new sub client

@@ -60,6 +60,7 @@
 * #### Clients
 	* [sub-client](#sub-client)
 	* [Set client default service fee settings](#set-client-default-service-fee-settings)
+	* [Set client default service settings](#set-client-default-service-settings)
 	* [Set client settings](#set-client-settings)
 	* [Get client settings](#get-client-settings)
   
@@ -660,6 +661,16 @@ $ServiceFeeSettings = [
 ];
 $result = $serverCaller->SetClientDefaultServiceFeeSettings($clientId, $ServiceFeeSettings,$sessionToken);
 ```
+### Set client default service settings
+```
+$clientId = $clientId;
+$ServiceFeeSettings = [
+	"ConvenientFeeDebitAbsoluteFee" => 0,
+	"ConvenientFeeCreditAbsoluteFee" => 0,
+];
+$result = $serverCaller->SetClientDefaultServiceSettings($clientId, $ServiceSettings,$sessionToken);
+```
+
 ### Set client settings
 ```
 $clientId = $clientId;
