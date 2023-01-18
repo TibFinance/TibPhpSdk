@@ -8,12 +8,12 @@ use TibFinanceSDK\ServerCaller;
 $serverCaller = new ServerCaller();
 $serverCaller->SetUrl("http://sandboxportal.tib.finance");
 
-$userName = "sdkdev";
-$password = "Test123!";
-$clientId = "4671a4c9-4367-4934-bb23-a8886cebd028";
-$serviceId = "038d7171-bf23-4f3c-9e78-cf6342624fc7";
-$merchantId = "ea34f2c6-36b2-4513-973e-a2c91e7985d3";
-$sessionToken = "eefbcf1d-3834-4739-aa61-5d8fb219a04a";
+$userName = "";
+$password = "";
+$clientId = "";
+$serviceId = "";
+$merchantId = "";
+$sessionToken = "";
 
 if (isset($_COOKIE["SessionIdToken"])) {
     $sessionToken = $_COOKIE["SessionIdToken"];
