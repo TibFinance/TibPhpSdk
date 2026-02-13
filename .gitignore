@@ -1,0 +1,5 @@
+*.log
+*.cache
+.env
+.idea/
+.vscode/
