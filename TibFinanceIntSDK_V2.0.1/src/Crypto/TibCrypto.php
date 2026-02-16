@@ -6,7 +6,7 @@ use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\Rijndael;
 
 /**
- * TibCrypto is a class who implement crypto methods and the curl method for calling Tib Finance Server
+ * TibCrypto is a class that implements crypto methods and the curl method for calling Tib Finance Server
  */
 class TibCrypto
 {
