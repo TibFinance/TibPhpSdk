@@ -1,7 +1,7 @@
 {
     "name": "tib-finance/tib-finance-sdk",
     "description": "PHP SDK for the TIB Finance payment processing API",
-    "version": "2.0.0",
+    "version": "2.0.2",
     "license": "MIT",
     "authors": [
         {
