@@ -2,7 +2,7 @@
 
 namespace TibFinanceSDK;
 
-require("Crypto/TibCrypto.php");
+require(__DIR__ . "/Crypto/TibCrypto.php");
 
 /**
  * ServerCaller is a class that implements all TIB FINANCE API methods
@@ -16,9 +16,8 @@ class ServerCaller
     }
 
     /**
-     * Set up the Api Url .
-     * @param string the api's Url
-     * 
+     * Sets up the API URL.
+     * @param string $url The API URL.
      */
     public function SetUrl($url)
     {
@@ -32,7 +31,7 @@ class ServerCaller
      * @param string $username
      * @param string $password
      *
-     * @return json
+     * @return mixed
      */
     public function createSession(
         $clientId,
@@ -56,7 +55,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function listServices(
         $sessionToken,
@@ -79,7 +78,7 @@ class ServerCaller
      * @param string $serviceId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function getService(
         $sessionToken,
@@ -103,7 +102,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $serviceId
      *
-     * @return json
+     * @return mixed
      */
     public function getWalletInformationsByService(
         $sessionToken,
@@ -127,7 +126,7 @@ class ServerCaller
      * @param bool $includeClientMerchants
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function listMerchants(
         $sessionToken,
@@ -149,11 +148,11 @@ class ServerCaller
 
 
     /**
-     * Lists the merchants with boarding.
+     * Gets the boarding status for a service.
      * @param string $sessionToken
      * @param string $boardingServiceId
      *
-     * @return json
+     * @return mixed
      */
     public function getServiceBoardingStatus(
         $sessionToken,
@@ -204,7 +203,7 @@ class ServerCaller
      * @param string $accountType
      * @param string $currency
      *
-     * @return json
+     * @return mixed
      */
     public function createMerchant(
         $sessionToken,
@@ -290,7 +289,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function getMerchant(
         $sessionToken,
@@ -341,7 +340,7 @@ class ServerCaller
      * @param string $accountType
      * @param string $currency
      *
-     * @return json
+     * @return mixed
      */
     public function saveMerchant(
         $sessionToken,
@@ -442,7 +441,7 @@ class ServerCaller
      * @param string $countryId
      * @param string $favoriteProvider
      *
-     * @return json
+     * @return mixed
      */
     public function saveMerchantBasicInfo(
         $sessionToken,
@@ -512,7 +511,7 @@ class ServerCaller
      * @param string $accountType
      * @param string $currency
      *
-     * @return json
+     * @return mixed
      */
     public function saveMerchantAccountInfo(
         $sessionToken,
@@ -564,7 +563,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function deleteMerchant(
         $sessionToken,
@@ -587,7 +586,7 @@ class ServerCaller
      * @param string $externalSystemId
      * @param string $externalSystemGroupId
      *
-     * @return json
+     * @return mixed
      */
     public function getMerchantsByExternalId(
         $sessionToken,
@@ -615,7 +614,7 @@ class ServerCaller
      * @param string $mode
      * @param bool $useInterac
      *
-     * @return json
+     * @return mixed
      */
     public function adjustWallet(
         $sessionToken,
@@ -646,7 +645,7 @@ class ServerCaller
      * @param string $serviceId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function listCustomers(
         $sessionToken,
@@ -673,19 +672,11 @@ class ServerCaller
      * @param string $customerExternalId
      * @param string $customerDescription
      * @param string $customerEmail
-     * @param Guid $paymentMethodId
-     * @param bool $isCustomerAutomaticPaymentMethod
-     * @param string $paymentMethodType
-     * @param string $paymentMethodDescription
-     * @param string $accountPreview
-     * @param string $owner
-     * @param Guid $merchantId
-     * @param string $merchantName
-     * @param ContactInfoModel $contactInfo
+     * @param array $paymentMethods
+     * @param mixed $contactInfo
      * @param string $language
-     * @param DateTime $expirationDate
      *
-     * @return json
+     * @return mixed
      */
     public function createCustomer(
         $sessionToken,
@@ -694,17 +685,9 @@ class ServerCaller
         $customerExternalId,
         $customerDescription,
         $customerEmail,
-        $paymentMethodId,
-        $isCustomerAutomaticPaymentMethod,
-        $paymentMethodType,
-        $paymentMethodDescription,
-        $accountPreview,
-        $owner,
-        $merchantId,
-        $merchantName,
+        $paymentMethods,
         $contactInfo,
-        $language = null,
-        $expirationDate = null
+        $language = null
     ) {
         $methodName = "/Data/CreateCustomer";
 
@@ -717,19 +700,7 @@ class ServerCaller
                 "Language" => $language,
                 "CustomerDescription" => $customerDescription,
                 "CustomerEmail" => $customerEmail,
-                "PaymentMethods" => [
-                "PaymentMethodId" => $paymentMethodId,
-                "IsCustomerAutomaticPaymentMethod" => $isCustomerAutomaticPaymentMethod,
-                "PaymentMethodType" => $paymentMethodType,
-                "PaymentMethodDescription" => $paymentMethodDescription,
-                "AccountPreview" => $accountPreview,
-                "ExpirationDate" => $expirationDate,
-                "Owner" => $owner,
-                "PreauthorizedMerchants" => [
-                "MerchantId" => $merchantId,
-                "MerchantName" => $merchantName
-            ]
-            ],
+                "PaymentMethods" => $paymentMethods,
                 "ContactInfo" => $contactInfo
             ],
         ];
@@ -744,7 +715,7 @@ class ServerCaller
      * @param string $customerId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function getCustomer(
         $sessionToken,
@@ -770,20 +741,13 @@ class ServerCaller
      * @param string $customerExternalId
      * @param string $customerDescription
      * @param string $customerEmail
-     * @param Guid $paymentMethodId
-     * @param bool $isCustomerAutomaticPaymentMethod
-     * @param string $paymentMethodType
-     * @param string $paymentMethodDescription
-     * @param string $accountPreview
-     * @param string $owner
-     * @param Guid $merchantId
-     * @param string $merchantName
-     * @param ContactInfoModel $contactInfo
-     * @param Guid $customerId
+     * @param array $paymentMethods
+     * @param mixed $contactInfo
+     * @param string $customerId
      * @param string $language
-     * @param DateTime $expirationDate
+     * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function saveCustomer(
         $sessionToken,
@@ -791,18 +755,11 @@ class ServerCaller
         $customerExternalId,
         $customerDescription,
         $customerEmail,
-        $paymentMethodId,
-        $isCustomerAutomaticPaymentMethod,
-        $paymentMethodType,
-        $paymentMethodDescription,
-        $accountPreview,
-        $owner,
-        $merchantId,
-        $merchantName,
+        $paymentMethods,
         $contactInfo,
         $customerId,
         $language = null,
-        $expirationDate = null
+        $merchantId = null
     ) {
         $methodName = "/Data/SaveCustomer";
 
@@ -814,19 +771,7 @@ class ServerCaller
                 "Language" => $language,
                 "CustomerDescription" => $customerDescription,
                 "CustomerEmail" => $customerEmail,
-                "PaymentMethods" => [
-                "PaymentMethodId" => $paymentMethodId,
-                "IsCustomerAutomaticPaymentMethod" => $isCustomerAutomaticPaymentMethod,
-                "PaymentMethodType" => $paymentMethodType,
-                "PaymentMethodDescription" => $paymentMethodDescription,
-                "AccountPreview" => $accountPreview,
-                "ExpirationDate" => $expirationDate,
-                "Owner" => $owner,
-                "PreauthorizedMerchants" => [
-                "MerchantId" => $merchantId,
-                "MerchantName" => $merchantName
-            ]
-            ],
+                "PaymentMethods" => $paymentMethods,
                 "ContactInfo" => $contactInfo,
                 "CustomerId" => $customerId
             ],
@@ -842,7 +787,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $customerId
      *
-     * @return json
+     * @return mixed
      */
     public function deleteCustomer(
         $sessionToken,
@@ -865,7 +810,7 @@ class ServerCaller
      * @param string $externalCustomerId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function getCustomersByExternalId(
         $sessionToken,
@@ -890,7 +835,7 @@ class ServerCaller
      * @param string $customerId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function listPaymentMethods(
         $sessionToken,
@@ -916,7 +861,7 @@ class ServerCaller
      * @param string $customerId
      * @param bool $isCustomerAutomaticPaymentMethod
      * @param string $creditCardDescription
-     * @param ulong $pan
+     * @param int $pan
      * @param string $cVD
      * @param int $expirationMonth
      * @param int $expirationYear
@@ -924,7 +869,7 @@ class ServerCaller
      * @param string $streetAddress
      * @param string $addressCity
      * @param string $postalZipCode
-     * @param DateTime $expirationDate
+     * @param \DateTime $expirationDate
      * @param string $formatedCreditCardString
      * @param string $previewString
      * @param string $zipCode
@@ -932,7 +877,7 @@ class ServerCaller
      * @param string $countryId
      * @param string $language
      *
-     * @return json
+     * @return mixed
      */
     public function createCreditCardPaymentMethod(
         $sessionToken,
@@ -1010,7 +955,7 @@ class ServerCaller
      * @param string $currency
      * @param string $language
      *
-     * @return json
+     * @return mixed
      */
     public function createDirectAccountPaymentMethod(
         $sessionToken,
@@ -1075,7 +1020,7 @@ class ServerCaller
      * @param string $language
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function createInteracPaymentMethod(
         $sessionToken,
@@ -1117,7 +1062,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $paymentMethodId
      *
-     * @return json
+     * @return mixed
      */
     public function getPaymentMethod(
         $sessionToken,
@@ -1139,7 +1084,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $paymentMethodId
      *
-     * @return json
+     * @return mixed
      */
     public function deletePaymentMethod(
         $sessionToken,
@@ -1162,7 +1107,7 @@ class ServerCaller
      * @param string $customerId
      * @param string $paymentMethodId
      *
-     * @return json
+     * @return mixed
      */
     public function setDefaultPaymentMethod(
         $sessionToken,
@@ -1189,7 +1134,7 @@ class ServerCaller
      * @param \DateTime $fromDateTime
      * @param \DateTime $toDateTime
      *
-     * @return json
+     * @return mixed
      */
     public function listBills(
         $sessionToken,
@@ -1215,10 +1160,10 @@ class ServerCaller
     /**
      * Creates the bill.
      * @param string $sessionToken
-     * @param Guid $merchantId
+     * @param string $merchantId
      * @param string $billTitle
      * @param string $billDescription
-     * @param decimal $billAmount
+     * @param float $billAmount
      * @param string $externalSystemBillNumber1
      * @param string $externalSystemBillNumber2
      * @param string $externalSystemBillNumber3
@@ -1226,9 +1171,9 @@ class ServerCaller
      * @param bool $breakIfMerchantNeverBeenAuthorized
      * @param string $billCurrency
      * @param string $language
-     * @param Guid $relatedCustomerId
+     * @param string $relatedCustomerId
      *
-     * @return json
+     * @return mixed
      */
     public function createBill(
         $sessionToken,
@@ -1275,7 +1220,7 @@ class ServerCaller
      * @param string $billId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function getBill(
         $sessionToken,
@@ -1300,7 +1245,7 @@ class ServerCaller
      * @param string $billId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function deleteBill(
         $sessionToken,
@@ -1332,7 +1277,7 @@ class ServerCaller
      * @param \DateTime $fromDate
      * @param \DateTime $toDate
      *
-     * @return json
+     * @return mixed
      */
     public function listTransfers(
         $sessionToken,
@@ -1366,7 +1311,7 @@ class ServerCaller
 
 
     /**
-     * Lists the transfers.
+     * Lists the transfers using an optimized fast query.
      * @param string $sessionToken
      * @param string $serviceId
      * @param string $transferGroupId
@@ -1378,7 +1323,7 @@ class ServerCaller
      * @param \DateTime $toDate
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function listTransfersFast(
         $sessionToken,
@@ -1412,12 +1357,12 @@ class ServerCaller
 
 
     /**
-     * Lists the transfers of a bill.
+     * Lists the transfers for a specific bill using an optimized fast query.
      * @param string $sessionToken
      * @param string $merchantId
      * @param string $billId
      *
-     * @return json
+     * @return mixed
      */
     public function listTransfersForBillFast(
         $sessionToken,
@@ -1441,7 +1386,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $serviceId
      *
-     * @return json
+     * @return mixed
      */
     public function getRecuringTransfers(
         $sessionToken,
@@ -1463,7 +1408,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $recuringTransferId
      *
-     * @return json
+     * @return mixed
      */
     public function deleteRecuringTransfer(
         $sessionToken,
@@ -1496,16 +1441,16 @@ class ServerCaller
      * @param bool $doNotSendEmail
      * @param string $statementDescription
      * @param string $language
-     * @param Guid $relatedCustomerId
-     * @param DateTime $dueDate
-     * @param decimal $paymentAmount
-     * @param Guid $forcedCustomerPaymentMethodId
+     * @param string $relatedCustomerId
+     * @param \DateTime $dueDate
+     * @param float $paymentAmount
+     * @param string $forcedCustomerPaymentMethodId
      * @param string $autorizedPaymentMethod
      * @param bool $askForCustomerConsent
      * @param string $merchantId
      * @param bool $immediateTransfer
      *
-     * @return json
+     * @return mixed
      */
     public function createPayment(
         $sessionToken,
@@ -1555,7 +1500,6 @@ class ServerCaller
             "MerchantId" => $merchantId,
             "ExternalReferenceId" => $externalReferenceId,
             "SafetyToBreakIfOverRemainingBillAmount" => $safetyToBreakIfOverRemainingBillAmount,
-            "AutorizedPaymentMethod" => $autorizedPaymentMethod,
             "DoNotSendEmail" => $doNotSendEmail,
             "ImmediateTransfer" => $immediateTransfer,
             "StatementDescription" => $statementDescription,
@@ -1570,7 +1514,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $paymentId
      *
-     * @return json
+     * @return mixed
      */
     public function getPayment(
         $sessionToken,
@@ -1592,7 +1536,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $paymentId
      *
-     * @return json
+     * @return mixed
      */
     public function deletePayment(
         $sessionToken,
@@ -1627,7 +1571,7 @@ class ServerCaller
      * @param string $currency
      * @param string $language
      *
-     * @return json
+     * @return mixed
      */
     public function createDirectInteracTransaction(
         $sessionToken,
@@ -1678,7 +1622,7 @@ class ServerCaller
      * @param string $rawAcpFileContent
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function createTransactionFromRaw(
         $sessionToken,
@@ -1709,7 +1653,7 @@ class ServerCaller
      * @param string $dateType
      * @param string $serviceId
      *
-     * @return json
+     * @return mixed
      */
     public function listExecutedOperations(
         $sessionToken,
@@ -1745,7 +1689,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $paymentId
      *
-     * @return json
+     * @return mixed
      */
     public function forcePaymentProcess(
         $sessionToken,
@@ -1779,7 +1723,7 @@ class ServerCaller
      * @param string $billId
      * @param \DateTime $paymentDueDate
      *
-     * @return json
+     * @return mixed
      */
     public function getDropInPublicToken(
         $sessionToken,
@@ -1841,7 +1785,7 @@ class ServerCaller
      * @param bool $immediateTransfer
      * @param bool $stopSameIdentifications
      *
-     * @return json
+     * @return mixed
      */
     public function createFreeOperation(
         $sessionToken,
@@ -1897,7 +1841,7 @@ class ServerCaller
      * @param string $groupId
      * @param bool $stopSameIdentifications
      *
-     * @return json
+     * @return mixed
      */
     public function createFreeOperationBatch(
         $sessionToken,
@@ -1923,7 +1867,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $transferId
      *
-     * @return json
+     * @return mixed
      */
     public function revertTransfer(
         $sessionToken,
@@ -1948,7 +1892,7 @@ class ServerCaller
      * @param string $interacAnswer
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function changeInteracPaymentMethodQuestionAndAnswer(
         $sessionToken,
@@ -1976,7 +1920,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $serviceId
      *
-     * @return json
+     * @return mixed
      */
     public function initBoarding(
         $sessionToken,
@@ -2000,7 +1944,7 @@ class ServerCaller
      * @param string $language
      * @param string $currency
      *
-     * @return json
+     * @return mixed
      */
     public function createSubClient(
         $sessionToken,
@@ -2027,7 +1971,7 @@ class ServerCaller
      * @param string $paymentId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function resendPaymentEmail(
         $sessionToken,
@@ -2052,7 +1996,7 @@ class ServerCaller
      * @param string $transferId
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function relaunchMerchantFailedTransfer(
         $sessionToken,
@@ -2085,7 +2029,7 @@ class ServerCaller
      * @param string $billDescription
      * @param string $billTitle
      *
-     * @return json
+     * @return mixed
      */
     public function createSupplierTransfer(
         $sessionToken,
@@ -2125,7 +2069,7 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $merchantId
      *
-     * @return json
+     * @return mixed
      */
     public function getSuppliers(
         $sessionToken,
@@ -2154,7 +2098,7 @@ class ServerCaller
      * @param string $bankNumber
      * @param string $institutionNumber
      *
-     * @return json
+     * @return mixed
      */
     public function createSupplier(
         $sessionToken,
@@ -2192,7 +2136,7 @@ class ServerCaller
      * @param \DateTime $from
      * @param \DateTime $to
      *
-     * @return json
+     * @return mixed
      */
     public function getWalletOperations(
         $sessionToken,

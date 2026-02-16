@@ -8,7 +8,7 @@ PHP SDK for the TIB Finance payment processing API.
 
 ```bash
 git clone https://github.com/TibFinance/TibPhpSdk.git
-cd TibPhpSdk
+cd TibPhpSdk/TibFinanceIntSDK_V2.0.1
 composer install
 ```
 

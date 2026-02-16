@@ -15,6 +15,7 @@
         }
     },
     "require": {
+        "php": ">=7.4",
         "phpseclib/phpseclib": "~3.0"
     }
 }

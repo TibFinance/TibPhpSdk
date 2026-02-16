@@ -11,26 +11,23 @@ use phpseclib3\Crypt\Rijndael;
 class TibCrypto
 {
     private $url;
-    public $ma_public_key = "";
-    public $ma_private_key = "";
-    public $server_public_key = "";
 
     public function __construct($url)
     {
         $this->url = $url;
-
+     
     }
 
-	function safe_utf8_encode($input) {
-		if (!is_string($input)) {
-			return $input;
-		}
+    private function safe_utf8_encode($input) {
+        if (!is_string($input)) {
+            return $input;
+        }
 
-		// Basic fallback for UTF-8 conversion
-		$encoded = @iconv('ISO-8859-1', 'UTF-8', $input);
+        // Basic fallback for UTF-8 conversion
+        $encoded = @iconv('ISO-8859-1', 'UTF-8', $input);
 
-		return $encoded ?: $input;
-	}
+        return $encoded ?: $input;
+    }
 
     /**
      * Perform a call to the TIB FINANCE API
@@ -66,7 +63,7 @@ class TibCrypto
         $methodName = "/Data/ExecuteKeyExchange";
 
         // ***** Step 1: Request the asymmetric key *****
-        $cle_asymetrique_decoded = $this->getPublicKey();
+        $publicKeyResponse = $this->getPublicKey();
 
         // ***** Step 2: Generate the client portion of the symmetric key *****
         $client_key = random_bytes(16);
@@ -76,25 +73,25 @@ class TibCrypto
         $privateKey = RSA::createKey(512);
         $privateKey->withPadding(RSA::ENCRYPTION_PKCS1);
         $rsa_public_key = $privateKey->getPublicKey();
-        $ma_public_key = $rsa_public_key;
-        $ma_private_key = $privateKey->__toString();
+        $localPublicKey = $rsa_public_key;
+        $localPrivateKey = $privateKey->__toString();
 
         // ***** Step 4: Merge the symmetric key and the asymmetric key *****
         $merged_keys = $client_key . $rsa_public_key;
 
         // ***** Step 5: Encrypt the merged key *****
 
-        $server_public_key = $cle_asymetrique_decoded->PublicPEMKey;
+        $serverPublicKey = $publicKeyResponse->PublicPEMKey;
 
         $enc = "";
-        openssl_public_encrypt($merged_keys, $enc, $cle_asymetrique_decoded->PublicPEMKey);
+        openssl_public_encrypt($merged_keys, $enc, $publicKeyResponse->PublicPEMKey);
         $ciphertext = base64_encode($enc);
 
         // ***** Step 6: Transmit the first key *****
         $fields = [
                     'key' => [
-                                'KeyToken' => $cle_asymetrique_decoded->KeyToken,
-                                'CallNode' => $cle_asymetrique_decoded->NodeAnswered,
+                                'KeyToken' => $publicKeyResponse->KeyToken,
+                                'CallNode' => $publicKeyResponse->NodeAnswered,
                                 'AsymetricClientPublicKeyAndClientSymetricXmlBase64' => $ciphertext
                             ]
                 ];
@@ -111,8 +108,12 @@ class TibCrypto
         $response = curl_exec($ch);
 
         if (curl_error($ch) != '') {
-            throw new \Exception("cURL error: " . curl_error($ch));
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new \Exception("cURL error: " . $error);
         }
+
+        curl_close($ch);
 
         $key_exchanged_decoded = json_decode($response);
 
@@ -120,7 +121,7 @@ class TibCrypto
         $server_key = base64_decode($key_exchanged_decoded->SymetricHostHalfKey);
 
         $decoded_server_key = "";
-        openssl_private_decrypt($server_key, $decoded_server_key, $ma_private_key);
+        openssl_private_decrypt($server_key, $decoded_server_key, $localPrivateKey);
 
         // ***** Step 8: Combine the 2 symmetric keys *****
         $merged_keys_sym = $client_key . $decoded_server_key;
@@ -128,7 +129,7 @@ class TibCrypto
         // Data to return
         $keys = [
             "MergedKeysSym" => $merged_keys_sym,
-            "CallNode" => $cle_asymetrique_decoded->NodeAnswered,
+            "CallNode" => $publicKeyResponse->NodeAnswered,
             "KeyToken" => $key_exchanged_decoded->FullSymetricKeyToken,
         ];
 
@@ -138,7 +139,7 @@ class TibCrypto
     /**
      * Get the public key from the TIB FINANCE API
      *
-     * @return array
+     * @return object
      */
     public function getPublicKey()
     {
@@ -153,8 +154,12 @@ class TibCrypto
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($ch);
         if (curl_error($ch) != '') {
-            throw new \Exception("cURL error: " . curl_error($ch));
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new \Exception("cURL error: " . $error);
         }
+
+        curl_close($ch);
 
         return json_decode($response);
     }
@@ -205,7 +210,7 @@ class TibCrypto
      * @param string $tib_client_id
      * @param string $userName
      * @param string $password
-     * @return json
+     * @return string
      */
     public function prepareTibSessionData($tib_client_id, $userName, $password)
     {
@@ -260,6 +265,14 @@ class TibCrypto
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($ch);
 
+        if (curl_error($ch) != '') {
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new \Exception("cURL error: " . $error);
+        }
+
+        curl_close($ch);
+
         $call_data = json_decode($response);
 
         return $call_data;
@@ -270,7 +283,7 @@ class TibCrypto
      *
      * @param $call_data
      * @param $MergedKeysSym
-     * @return array
+     * @return object
      */
     public function decryptTibResponse($call_data, $MergedKeysSym)
     {
@@ -287,3 +300,4 @@ class TibCrypto
         return json_decode($response);
     }
 }
+
