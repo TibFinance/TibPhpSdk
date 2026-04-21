@@ -148,7 +148,7 @@ class ServerCaller
 
 
     /**
-     * Lists the merchants with boarding.
+     * Retrieves the payment provider boarding (onboarding) status for all merchants within a service. Returns each merchant's boarding progress with their current status.
      * @param string $sessionToken
      * @param string $boardingServiceId
      *
@@ -2142,7 +2142,7 @@ class ServerCaller
 
 
     /**
-     * 
+     * Lists suppliers linked to the specified merchant, including detailed information such as supplier name, email address, and creation date. For a lightweight name-and-ID-only list, use GetSuppliers instead.
      * @param string $sessionToken
      * @param string $merchantId
      *
@@ -2164,7 +2164,7 @@ class ServerCaller
 
 
     /**
-     * 
+     * Updates the display name (alias) that the payer uses to identify a supplier. The alias is a payer-side label and does not affect the supplier's own merchant name.
      * @param string $sessionToken
      * @param string $merchantSupplierId
      * @param string $supplierName
@@ -2192,7 +2192,7 @@ class ServerCaller
 
 
     /**
-     * 
+     * Soft-deletes a supplier link for the specified merchant. The supplier's merchant account is not affected â€” only the payer-to-supplier association is removed.
      * @param string $sessionToken
      * @param string $merchantSupplierId
      * @param string $merchantId
@@ -2210,6 +2210,90 @@ class ServerCaller
             "SessionToken" => $sessionToken,
             "MerchantId" => $merchantId,
             "MerchantSupplierId" => $merchantSupplierId,
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Lists supplier transfers initiated by the calling merchant (identified via FeeMerchantId). Returns transfers where the caller is the fee-payer, with optional datestatus filters.
+     * @param string $sessionToken
+     * @param bool $onlyWithErrors
+     * @param bool $markResolvedOnly
+     * @param string $transferGroupId
+     * @param string $merchantId
+     * @param \DateTime $fromDate
+     * @param \DateTime $toDate
+     * @param string $supplierMerchantId
+     *
+     * @return mixed
+     */
+    public function listSupplierTransfers(
+        $sessionToken,
+        $onlyWithErrors,
+        $markResolvedOnly,
+        $transferGroupId,
+        $merchantId = null,
+        $fromDate = null,
+        $toDate = null,
+        $supplierMerchantId = null
+    ) {
+        $methodName = "/Data/ListSupplierTransfers";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "MerchantId" => $merchantId,
+            "FromDate" => $fromDate,
+            "ToDate" => $toDate,
+            "OnlyWithErrors" => $onlyWithErrors,
+            "MarkResolvedOnly" => $markResolvedOnly,
+            "TransferGroupId" => $transferGroupId,
+            "SupplierMerchantId" => $supplierMerchantId,
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Retrieves a single supplier transfer by ID. Accessible to both the fee-payer and the supplier. Returns the transfer details along with the counterparty name and the caller's role.
+     * @param string $sessionToken
+     * @param string $transferId
+     *
+     * @return mixed
+     */
+    public function getSupplierTransfer(
+        $sessionToken,
+        $transferId
+    ) {
+        $methodName = "/Data/GetSupplierTransfer";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "TransferId" => $transferId,
+        ];
+
+        return $this->tibCrypto->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Lists recurring supplier transfers initiated by the calling merchant. Returns recurring transfer configurations where the caller is the fee-payer.
+     * @param string $sessionToken
+     * @param string $merchantId
+     *
+     * @return mixed
+     */
+    public function listSupplierRecurringTransfers(
+        $sessionToken,
+        $merchantId = null
+    ) {
+        $methodName = "/Data/ListSupplierRecurringTransfers";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "MerchantId" => $merchantId,
         ];
 
         return $this->tibCrypto->performCall($methodName, $data);

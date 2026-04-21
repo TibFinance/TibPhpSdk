@@ -30,6 +30,52 @@ class TibCrypto
     }
 
     /**
+     * Recursively remove null values and empty strings from arrays/objects.
+     * Matches Python SDK's object2dict behavior: the server treats missing keys
+     * as default/null, so stripping them avoids 500s on non-nullable fields when
+     * callers pass null for optional properties.
+     *
+     * Empty arrays are preserved (only null/empty-string leaves are stripped).
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    private function stripNullsAndEmpty($data)
+    {
+        if (is_array($data)) {
+            // Associative arrays represent JSON objects — strip them when empty
+            // so server short-circuits on the whole subobject (Address, etc.).
+            // Indexed arrays represent JSON lists — preserve even when empty
+            // (e.g. FreeOperationBatchList: [] is a valid request).
+            $isAssoc = !empty($data) && !array_is_list($data);
+            $result = [];
+            foreach ($data as $key => $val) {
+                $filtered = $this->stripNullsAndEmpty($val);
+                if ($filtered === null || $filtered === '') {
+                    continue;
+                }
+                $result[$key] = $filtered;
+            }
+            if ($isAssoc && empty($result)) {
+                return null;
+            }
+            return $result;
+        }
+        if (is_object($data)) {
+            foreach (get_object_vars($data) as $key => $val) {
+                $filtered = $this->stripNullsAndEmpty($val);
+                if ($filtered === null || $filtered === '') {
+                    unset($data->$key);
+                    continue;
+                }
+                $data->$key = $filtered;
+            }
+            return $data;
+        }
+        return $data;
+    }
+
+    /**
      * Perform a call to the TIB FINANCE API
      * @param string $methodName : The method name on TIB FINANCE side (e.g., /Data/CreateCustomer)
      * @param array $data : The attributes required by TIB FINANCE API
@@ -38,7 +84,8 @@ class TibCrypto
      */
     public function performCall($methodName, $data)
     {
-        $content = $this->safe_utf8_encode((json_encode($data)));
+        $cleaned = $this->stripNullsAndEmpty($data);
+        $content = $this->safe_utf8_encode((json_encode($cleaned)));
 
         // Exchange keys between the SDK and the TIB FINANCE API
         $keys = $this->exchangeTibKey();
