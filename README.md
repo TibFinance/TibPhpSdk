@@ -6,22 +6,25 @@ PHP SDK for the TIB Finance payment processing API.
 
 ## Installation
 
+Install with Composer from the GitHub repository (this package is not published on Packagist):
+
 ```bash
-git clone https://github.com/TibFinance/TibPhpSdk.git
-cd TibPhpSdk/TibFinanceIntSDK_V2.0.1
-composer install
+composer config repositories.tib-finance vcs https://github.com/TibFinance/TibPhpSdk
+composer require tib-finance/tib-finance-sdk:^2.0
 ```
 
-Then include the SDK in your project:
+**Manual installation** (alternative):
 
-```php
-require_once 'path/to/TibFinanceIntSDK_V2.0.1/src/ServerCaller.php';
+```bash
+git clone https://github.com/TibFinance/TibPhpSdk.git
+cd TibPhpSdk
+composer install
 ```
 
 ## Quick Start
 
 ```php
-require_once __DIR__ . '/TibFinanceIntSDK_V2.0.1/src/ServerCaller.php';
+require __DIR__ . '/vendor/autoload.php';
 use TibFinanceSDK\ServerCaller;
 
 $caller = new ServerCaller();

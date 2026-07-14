@@ -2,7 +2,7 @@
 
 namespace TibFinanceSDK;
 
-require(__DIR__ . "/Crypto/TibCrypto.php");
+require(__DIR__ . "/TibCrypto.php");
 
 /**
  * ServerCaller is a class that implements all TIB FINANCE API methods
