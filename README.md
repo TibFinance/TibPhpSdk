@@ -31,7 +31,7 @@ $caller = new ServerCaller();
 $caller->SetUrl("https://sandboxportal.tib.finance");
 
 $response = $caller->createSession("your_client_id", "your_username", "your_password");
-echo $response['SessionId'];
+echo $response->SessionId;
 ```
 
 ## Documentation
