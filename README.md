@@ -31,14 +31,18 @@ $caller = new ServerCaller();
 $caller->SetUrl("https://sandboxportal.tib.finance");
 
 $response = $caller->createSession("your_client_id", "your_username", "your_password");
-echo $response->SessionId;
+if ($response->HasError) {
+    echo "Session failed: " . $response->Messages;
+} else {
+    echo $response->SessionId;
+}
 ```
 
 ## Documentation
 
 For the complete API reference and guides, visit [doc.tib.finance](https://doc.tib.finance).
 
-This SDK provides access to **56 API methods** for payment processing, merchant management, and financial operations.
+This SDK provides access to **62 API methods** for payment processing, merchant management, and financial operations.
 
 ## Other TIB Finance SDKs
 
