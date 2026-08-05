@@ -335,6 +335,13 @@ class TibCrypto
      */
     public function decryptTibResponse($call_data, $MergedKeysSym)
     {
+        if ($call_data === null || !isset($call_data->IV)) {
+            throw new \RuntimeException(
+                "TIB API returned an unexpected non-JSON response. "
+                . "The requested method may not be available on this server."
+            );
+        }
+
         // ***** Step 10: Decrypt the call response *****
         $iv = implode(array_map('chr', $call_data->IV));
         $content = base64_decode($call_data->CryptedBase64Data);

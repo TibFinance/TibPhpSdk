@@ -24,6 +24,17 @@ class ServerCaller
         $this->tibCrypto = new TibCrypto($url);
     }
 
+    /**
+     * Returns the crypto engine, guarding against use before SetUrl().
+     */
+    private function crypto()
+    {
+        if ($this->tibCrypto === null) {
+            throw new \RuntimeException("Call SetUrl() before invoking API methods.");
+        }
+        return $this->tibCrypto;
+    }
+
     
     /**
      * Creates the session.
@@ -46,7 +57,7 @@ class ServerCaller
             "Password" => $password,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -68,7 +79,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -93,7 +104,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -115,7 +126,7 @@ class ServerCaller
             "ServiceId" => $serviceId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -143,7 +154,7 @@ class ServerCaller
             "IncludeClientMerchants" => $includeClientMerchants,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -165,7 +176,7 @@ class ServerCaller
             "BoardingServiceId" => $boardingServiceId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -202,6 +213,7 @@ class ServerCaller
      * @param string $favoriteProvider
      * @param string $accountType
      * @param string $currency
+     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -236,7 +248,8 @@ class ServerCaller
         $countryId = null,
         $favoriteProvider = null,
         $accountType = null,
-        $currency = null
+        $currency = null,
+        $ecpAccountType = null
     ) {
         $methodName = "/Data/CreateMerchant";
 
@@ -266,6 +279,7 @@ class ServerCaller
                 "Owner" => $owner,
                 "FirstName" => $firstName,
                 "LastName" => $lastName,
+                "EcpAccountType" => $ecpAccountType,
                 "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
@@ -280,7 +294,47 @@ class ServerCaller
             ],
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Adds a new bank account (i.e., new merchant in TIB's data model) to an existing fully-boarded service. Authorizes the new merchant on insert. One-shot semantic: no pending state, no approval workflow, no confirmation email. Owner and Currency are inherited from an active sibling merchant on the same service. This is a parallel path to CreateMerchant (which serves boarding's first-merchant insert).
+     * @param string $sessionToken
+     * @param string $serviceId
+     * @param string $name
+     * @param string $email
+     * @param string $language
+     * @param string $bankNumber
+     * @param string $institutionNumber
+     * @param string $accountNumber
+     *
+     * @return mixed
+     */
+    public function addBankAccount(
+        $sessionToken,
+        $serviceId,
+        $name,
+        $email,
+        $language,
+        $bankNumber,
+        $institutionNumber,
+        $accountNumber
+    ) {
+        $methodName = "/Data/AddBankAccount";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "ServiceId" => $serviceId,
+            "Name" => $name,
+            "Email" => $email,
+            "Language" => $language,
+            "BankNumber" => $bankNumber,
+            "InstitutionNumber" => $institutionNumber,
+            "AccountNumber" => $accountNumber,
+        ];
+
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -302,7 +356,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -339,6 +393,7 @@ class ServerCaller
      * @param string $favoriteProvider
      * @param string $accountType
      * @param string $currency
+     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -373,7 +428,8 @@ class ServerCaller
         $countryId = null,
         $favoriteProvider = null,
         $accountType = null,
-        $currency = null
+        $currency = null,
+        $ecpAccountType = null
     ) {
         $methodName = "/Data/SaveMerchant";
 
@@ -403,6 +459,7 @@ class ServerCaller
                 "Owner" => $owner,
                 "FirstName" => $firstName,
                 "LastName" => $lastName,
+                "EcpAccountType" => $ecpAccountType,
                 "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
@@ -417,7 +474,7 @@ class ServerCaller
             ],
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -488,7 +545,7 @@ class ServerCaller
             ],
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -512,6 +569,7 @@ class ServerCaller
      * @param string $twoFactorSecurityAnswer
      * @param string $accountType
      * @param string $currency
+     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -533,7 +591,8 @@ class ServerCaller
         $twoFactorCode,
         $twoFactorSecurityAnswer,
         $accountType = null,
-        $currency = null
+        $currency = null,
+        $ecpAccountType = null
     ) {
         $methodName = "/Data/SaveMerchantAccountInfo";
 
@@ -545,6 +604,7 @@ class ServerCaller
                 "Owner" => $owner,
                 "FirstName" => $firstName,
                 "LastName" => $lastName,
+                "EcpAccountType" => $ecpAccountType,
                 "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
@@ -560,7 +620,7 @@ class ServerCaller
             "TwoFactorSecurityAnswer" => $twoFactorSecurityAnswer,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -582,7 +642,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -607,12 +667,12 @@ class ServerCaller
             "ExternalSystemGroupId" => $externalSystemGroupId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
     /**
-     * Lists the customers.
+     * Adjusts a merchant's wallet balance. IncreaseWallet collects the amount from the merchant (by EFT, or by Interac when requested) and credits the wallet; DecreaseWallet withdraws it from the wallet balance, subject to the risk-adjusted withdrawable balance. Requires the wallet feature to be enabled for the service.
      * @param string $sessionToken
      * @param string $serviceId
      * @param string $merchantId
@@ -641,7 +701,7 @@ class ServerCaller
             "UseInterac" => $useInterac,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -666,7 +726,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -711,7 +771,7 @@ class ServerCaller
             ],
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -736,7 +796,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -784,7 +844,32 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Updates only a customer's contact information (email, phone, address, language) without touching the rest of the customer record. Use this when editing the contact card in isolation: fields left null preserve the stored value, empty strings clear it, and non-empty values overwrite.
+     * @param string $sessionToken
+     * @param string $customerId
+     * @param mixed $contactInfo
+     *
+     * @return mixed
+     */
+    public function saveCustomerContactInfo(
+        $sessionToken,
+        $customerId,
+        $contactInfo
+    ) {
+        $methodName = "/Data/SaveCustomerContactInfo";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "CustomerId" => $customerId,
+            "ContactInfo" => $contactInfo,
+        ];
+
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -806,7 +891,7 @@ class ServerCaller
             "CustomerId" => $customerId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -831,7 +916,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -856,7 +941,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -936,7 +1021,7 @@ class ServerCaller
             "Language" => $language,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -960,6 +1045,7 @@ class ServerCaller
      * @param string $accountType
      * @param string $currency
      * @param string $language
+     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -981,7 +1067,8 @@ class ServerCaller
         $previewString,
         $accountType = null,
         $currency = null,
-        $language = null
+        $language = null,
+        $ecpAccountType = null
     ) {
         $methodName = "/Data/CreateDirectAccountPaymentMethod";
 
@@ -994,6 +1081,7 @@ class ServerCaller
                 "Owner" => $owner,
                 "FirstName" => $firstName,
                 "LastName" => $lastName,
+                "EcpAccountType" => $ecpAccountType,
                 "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
@@ -1008,7 +1096,7 @@ class ServerCaller
             "Language" => $language,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1059,7 +1147,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1081,7 +1169,7 @@ class ServerCaller
             "PaymentMethodId" => $paymentMethodId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1103,7 +1191,7 @@ class ServerCaller
             "PaymentMethodId" => $paymentMethodId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1128,7 +1216,7 @@ class ServerCaller
             "PaymentMethodId" => $paymentMethodId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1159,7 +1247,7 @@ class ServerCaller
             "ToDateTime" => $toDateTime,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1216,7 +1304,7 @@ class ServerCaller
             "BreakIfMerchantNeverBeenAuthorized" => $breakIfMerchantNeverBeenAuthorized,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1241,7 +1329,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1266,7 +1354,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1312,7 +1400,7 @@ class ServerCaller
             "OnlyWithErrors" => $onlyWithErrors,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1358,7 +1446,7 @@ class ServerCaller
             "OnlyWithErrors" => $onlyWithErrors,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1383,7 +1471,7 @@ class ServerCaller
             "BillId" => $billId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1405,7 +1493,7 @@ class ServerCaller
             "ServiceId" => $serviceId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1427,7 +1515,7 @@ class ServerCaller
             "RecuringTransferId" => $recuringTransferId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1511,7 +1599,7 @@ class ServerCaller
             "StatementDescription" => $statementDescription,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1533,7 +1621,7 @@ class ServerCaller
             "PaymentId" => $paymentId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1555,7 +1643,7 @@ class ServerCaller
             "PaymentId" => $paymentId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1618,7 +1706,7 @@ class ServerCaller
             "ReferenceNumber" => $referenceNumber,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1627,13 +1715,15 @@ class ServerCaller
      * @param string $sessionToken
      * @param string $rawAcpFileContent
      * @param string $merchantId
+     * @param bool $isImmediate
      *
      * @return mixed
      */
     public function createTransactionFromRaw(
         $sessionToken,
         $rawAcpFileContent,
-        $merchantId = null
+        $merchantId = null,
+        $isImmediate = null
     ) {
         $methodName = "/Data/CreateTransactionFromRaw";
 
@@ -1641,9 +1731,10 @@ class ServerCaller
             "SessionToken" => $sessionToken,
             "RawAcpFileContent" => $rawAcpFileContent,
             "MerchantId" => $merchantId,
+            "IsImmediate" => $isImmediate,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1686,12 +1777,12 @@ class ServerCaller
             "ServiceId" => $serviceId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
     /**
-     * Forces the payment process.
+     * Forces immediate processing of a transfer that would otherwise wait for the next scheduled run. For supplier transfers, only the paying merchant (fee-payer) can force-process; the recipient supplier cannot force-execute a transfer they did not create.
      * @param string $sessionToken
      * @param string $paymentId
      *
@@ -1708,7 +1799,7 @@ class ServerCaller
             "PaymentId" => $paymentId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1766,7 +1857,7 @@ class ServerCaller
             "PaymentDueDate" => $paymentDueDate,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1839,7 +1930,7 @@ class ServerCaller
             "StopSameIdentifications" => $stopSameIdentifications,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1867,12 +1958,12 @@ class ServerCaller
             "StopSameIdentifications" => $stopSameIdentifications,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
     /**
-     * Reverts (cancels or reverses) a transfer. For pending gateway payments, deletes the transfer and its public token. For processed payments, creates reversal operations for each non-fee operation. Rejects transfers over $5,000 or wallet-type transfers.
+     * Reverts (cancels or reverses) a transfer. For pending gateway payments, deletes the transfer and its public token. For processed payments, creates reversal operations for each non-fee operation. Rejects transfers over $5,000 or wallet-type transfers. For supplier transfers, only the paying merchant (fee-payer) can revert; the recipient supplier cannot revert a transfer they did not create.
      * @param string $sessionToken
      * @param string $transferId
      *
@@ -1889,7 +1980,7 @@ class ServerCaller
             "TransferId" => $transferId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1920,29 +2011,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
-    }
-
-
-    /**
-     * Initializes the merchant onboarding (boarding) process for a service. Generates a public access token and returns a redirect URL to either the direct login page (if a service-level login exists) or the boarding sign-up wizard.
-     * @param string $sessionToken
-     * @param string $serviceId
-     *
-     * @return mixed
-     */
-    public function initBoarding(
-        $sessionToken,
-        $serviceId
-    ) {
-        $methodName = "/Data/InitBoarding";
-
-        $data = [
-            "SessionToken" => $sessionToken,
-            "ServiceId" => $serviceId,
-        ];
-
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1970,7 +2039,7 @@ class ServerCaller
             "Currency" => $currency,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -1995,7 +2064,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2020,7 +2089,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2072,7 +2141,7 @@ class ServerCaller
             "BillTitle" => $billTitle,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2094,7 +2163,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2137,7 +2206,7 @@ class ServerCaller
             "InstitutionNumber" => $institutionNumber,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2159,7 +2228,7 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2187,12 +2256,12 @@ class ServerCaller
             "SupplierName" => $supplierName,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
     /**
-     * Soft-deletes a supplier link for the specified merchant. The supplier's merchant account is not affected â€” only the payer-to-supplier association is removed.
+     * Soft-deletes a supplier link for the specified merchant. The supplier's merchant account is not affected — only the payer-to-supplier association is removed.
      * @param string $sessionToken
      * @param string $merchantSupplierId
      * @param string $merchantId
@@ -2212,12 +2281,12 @@ class ServerCaller
             "MerchantSupplierId" => $merchantSupplierId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
     /**
-     * Lists supplier transfers initiated by the calling merchant (identified via FeeMerchantId). Returns transfers where the caller is the fee-payer, with optional datestatus filters.
+     * Lists supplier transfers initiated by the calling merchant (identified via FeeMerchantId). Returns transfers where the caller is the fee-payer, with optional date/status filters.
      * @param string $sessionToken
      * @param bool $onlyWithErrors
      * @param bool $markResolvedOnly
@@ -2252,7 +2321,7 @@ class ServerCaller
             "SupplierMerchantId" => $supplierMerchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2274,7 +2343,7 @@ class ServerCaller
             "TransferId" => $transferId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2296,7 +2365,29 @@ class ServerCaller
             "MerchantId" => $merchantId,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Lists recurring supplier transfers across an entire service. Returns every non-deleted recurring supplier transfer where any merchant in the given service is the fee-payer, with the supplier merchant's name on each entry. Use this to view all recurring supplier payments service-wide; use ListSupplierRecurringTransfers when scoping to a single fee-paying merchant.
+     * @param string $sessionToken
+     * @param string $serviceId
+     *
+     * @return mixed
+     */
+    public function listSupplierRecurringTransfersByService(
+        $sessionToken,
+        $serviceId
+    ) {
+        $methodName = "/Data/ListSupplierRecurringTransfersByService";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "ServiceId" => $serviceId,
+        ];
+
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
@@ -2324,7 +2415,7 @@ class ServerCaller
             "To" => $to,
         ];
 
-        return $this->tibCrypto->performCall($methodName, $data);
+        return $this->crypto()->performCall($methodName, $data);
     }
 
 
