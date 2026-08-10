@@ -198,22 +198,14 @@ class ServerCaller
      * @param string $postalZipCode
      * @param string $accountName
      * @param string $owner
-     * @param string $firstName
-     * @param string $lastName
      * @param string $bankNumber
      * @param string $institutionNumber
      * @param string $accountNumber
      * @param string $routingNumber
      * @param string $checkDigit
-     * @param string $fullAccountNumber
-     * @param string $accountNumberWithCheckDigit
-     * @param string $previewString
      * @param string $provinceStateId
      * @param string $countryId
-     * @param string $favoriteProvider
-     * @param string $accountType
      * @param string $currency
-     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -234,22 +226,14 @@ class ServerCaller
         $postalZipCode,
         $accountName,
         $owner,
-        $firstName,
-        $lastName,
         $bankNumber,
         $institutionNumber,
         $accountNumber,
         $routingNumber,
         $checkDigit,
-        $fullAccountNumber,
-        $accountNumberWithCheckDigit,
-        $previewString,
         $provinceStateId = null,
         $countryId = null,
-        $favoriteProvider = null,
-        $accountType = null,
-        $currency = null,
-        $ecpAccountType = null
+        $currency = null
     ) {
         $methodName = "/Data/CreateMerchant";
 
@@ -273,23 +257,15 @@ class ServerCaller
                 "CountryId" => $countryId,
                 "PostalZipCode" => $postalZipCode
             ],
-                "FavoriteProvider" => $favoriteProvider,
                 "Account" => [
                 "AccountName" => $accountName,
                 "Owner" => $owner,
-                "FirstName" => $firstName,
-                "LastName" => $lastName,
-                "EcpAccountType" => $ecpAccountType,
-                "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
                 "AccountNumber" => $accountNumber,
                 "RoutingNumber" => $routingNumber,
                 "CheckDigit" => $checkDigit,
-                "Currency" => $currency,
-                "FullAccountNumber" => $fullAccountNumber,
-                "AccountNumberWithCheckDigit" => $accountNumberWithCheckDigit,
-                "PreviewString" => $previewString
+                "Currency" => $currency
             ]
             ],
         ];
@@ -378,22 +354,14 @@ class ServerCaller
      * @param string $postalZipCode
      * @param string $accountName
      * @param string $owner
-     * @param string $firstName
-     * @param string $lastName
      * @param string $bankNumber
      * @param string $institutionNumber
      * @param string $accountNumber
      * @param string $routingNumber
      * @param string $checkDigit
-     * @param string $fullAccountNumber
-     * @param string $accountNumberWithCheckDigit
-     * @param string $previewString
      * @param string $provinceStateId
      * @param string $countryId
-     * @param string $favoriteProvider
-     * @param string $accountType
      * @param string $currency
-     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -414,22 +382,14 @@ class ServerCaller
         $postalZipCode,
         $accountName,
         $owner,
-        $firstName,
-        $lastName,
         $bankNumber,
         $institutionNumber,
         $accountNumber,
         $routingNumber,
         $checkDigit,
-        $fullAccountNumber,
-        $accountNumberWithCheckDigit,
-        $previewString,
         $provinceStateId = null,
         $countryId = null,
-        $favoriteProvider = null,
-        $accountType = null,
-        $currency = null,
-        $ecpAccountType = null
+        $currency = null
     ) {
         $methodName = "/Data/SaveMerchant";
 
@@ -453,23 +413,15 @@ class ServerCaller
                 "CountryId" => $countryId,
                 "PostalZipCode" => $postalZipCode
             ],
-                "FavoriteProvider" => $favoriteProvider,
                 "Account" => [
                 "AccountName" => $accountName,
                 "Owner" => $owner,
-                "FirstName" => $firstName,
-                "LastName" => $lastName,
-                "EcpAccountType" => $ecpAccountType,
-                "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
                 "AccountNumber" => $accountNumber,
                 "RoutingNumber" => $routingNumber,
                 "CheckDigit" => $checkDigit,
-                "Currency" => $currency,
-                "FullAccountNumber" => $fullAccountNumber,
-                "AccountNumberWithCheckDigit" => $accountNumberWithCheckDigit,
-                "PreviewString" => $previewString
+                "Currency" => $currency
             ]
             ],
         ];
@@ -496,7 +448,6 @@ class ServerCaller
      * @param string $postalZipCode
      * @param string $provinceStateId
      * @param string $countryId
-     * @param string $favoriteProvider
      *
      * @return mixed
      */
@@ -516,8 +467,7 @@ class ServerCaller
         $addressCity,
         $postalZipCode,
         $provinceStateId = null,
-        $countryId = null,
-        $favoriteProvider = null
+        $countryId = null
     ) {
         $methodName = "/Data/SaveMerchantBasicInfo";
 
@@ -540,8 +490,7 @@ class ServerCaller
                 "ProvinceStateId" => $provinceStateId,
                 "CountryId" => $countryId,
                 "PostalZipCode" => $postalZipCode
-            ],
-                "FavoriteProvider" => $favoriteProvider
+            ]
             ],
         ];
 
@@ -555,21 +504,14 @@ class ServerCaller
      * @param string $merchantId
      * @param string $accountName
      * @param string $owner
-     * @param string $firstName
-     * @param string $lastName
      * @param string $bankNumber
      * @param string $institutionNumber
      * @param string $accountNumber
      * @param string $routingNumber
      * @param string $checkDigit
-     * @param string $fullAccountNumber
-     * @param string $accountNumberWithCheckDigit
-     * @param string $previewString
      * @param string $twoFactorCode
      * @param string $twoFactorSecurityAnswer
-     * @param string $accountType
      * @param string $currency
-     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -578,21 +520,14 @@ class ServerCaller
         $merchantId,
         $accountName,
         $owner,
-        $firstName,
-        $lastName,
         $bankNumber,
         $institutionNumber,
         $accountNumber,
         $routingNumber,
         $checkDigit,
-        $fullAccountNumber,
-        $accountNumberWithCheckDigit,
-        $previewString,
         $twoFactorCode,
         $twoFactorSecurityAnswer,
-        $accountType = null,
-        $currency = null,
-        $ecpAccountType = null
+        $currency = null
     ) {
         $methodName = "/Data/SaveMerchantAccountInfo";
 
@@ -602,19 +537,12 @@ class ServerCaller
             "Account" => [
                 "AccountName" => $accountName,
                 "Owner" => $owner,
-                "FirstName" => $firstName,
-                "LastName" => $lastName,
-                "EcpAccountType" => $ecpAccountType,
-                "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
                 "AccountNumber" => $accountNumber,
                 "RoutingNumber" => $routingNumber,
                 "CheckDigit" => $checkDigit,
-                "Currency" => $currency,
-                "FullAccountNumber" => $fullAccountNumber,
-                "AccountNumberWithCheckDigit" => $accountNumberWithCheckDigit,
-                "PreviewString" => $previewString
+                "Currency" => $currency
             ],
             "TwoFactorCode" => $twoFactorCode,
             "TwoFactorSecurityAnswer" => $twoFactorSecurityAnswer,
@@ -960,9 +888,6 @@ class ServerCaller
      * @param string $streetAddress
      * @param string $addressCity
      * @param string $postalZipCode
-     * @param \DateTime $expirationDate
-     * @param string $formatedCreditCardString
-     * @param string $previewString
      * @param string $zipCode
      * @param string $provinceStateId
      * @param string $countryId
@@ -984,9 +909,6 @@ class ServerCaller
         $streetAddress,
         $addressCity,
         $postalZipCode,
-        $expirationDate,
-        $formatedCreditCardString,
-        $previewString,
         $zipCode,
         $provinceStateId = null,
         $countryId = null,
@@ -1012,10 +934,7 @@ class ServerCaller
                 "ProvinceStateId" => $provinceStateId,
                 "CountryId" => $countryId,
                 "PostalZipCode" => $postalZipCode
-            ],
-                "ExpirationDate" => $expirationDate,
-                "FormatedCreditCardString" => $formatedCreditCardString,
-                "PreviewString" => $previewString
+            ]
             ],
             "ZipCode" => $zipCode,
             "Language" => $language,
@@ -1032,20 +951,13 @@ class ServerCaller
      * @param bool $isCustomerAutomaticPaymentMethod
      * @param string $accountName
      * @param string $owner
-     * @param string $firstName
-     * @param string $lastName
      * @param string $bankNumber
      * @param string $institutionNumber
      * @param string $accountNumber
      * @param string $routingNumber
      * @param string $checkDigit
-     * @param string $fullAccountNumber
-     * @param string $accountNumberWithCheckDigit
-     * @param string $previewString
-     * @param string $accountType
      * @param string $currency
      * @param string $language
-     * @param string $ecpAccountType
      *
      * @return mixed
      */
@@ -1055,20 +967,13 @@ class ServerCaller
         $isCustomerAutomaticPaymentMethod,
         $accountName,
         $owner,
-        $firstName,
-        $lastName,
         $bankNumber,
         $institutionNumber,
         $accountNumber,
         $routingNumber,
         $checkDigit,
-        $fullAccountNumber,
-        $accountNumberWithCheckDigit,
-        $previewString,
-        $accountType = null,
         $currency = null,
-        $language = null,
-        $ecpAccountType = null
+        $language = null
     ) {
         $methodName = "/Data/CreateDirectAccountPaymentMethod";
 
@@ -1079,19 +984,12 @@ class ServerCaller
             "Account" => [
                 "AccountName" => $accountName,
                 "Owner" => $owner,
-                "FirstName" => $firstName,
-                "LastName" => $lastName,
-                "EcpAccountType" => $ecpAccountType,
-                "AccountType" => $accountType,
                 "BankNumber" => $bankNumber,
                 "InstitutionNumber" => $institutionNumber,
                 "AccountNumber" => $accountNumber,
                 "RoutingNumber" => $routingNumber,
                 "CheckDigit" => $checkDigit,
-                "Currency" => $currency,
-                "FullAccountNumber" => $fullAccountNumber,
-                "AccountNumberWithCheckDigit" => $accountNumberWithCheckDigit,
-                "PreviewString" => $previewString
+                "Currency" => $currency
             ],
             "Language" => $language,
         ];
