@@ -499,7 +499,7 @@ class ServerCaller
 
 
     /**
-     * Saves the merchant account information. This operation is protected by two-factor authentication.
+     * Saves the merchant account information. This operation is protected by two-factor authentication. On first use the response carries two-factor setup instructions (TwoFactorStatus and TwoFactorSetupData); see the Two-factor authentication guide.
      * @param string $sessionToken
      * @param string $merchantId
      * @param string $accountName
@@ -600,13 +600,14 @@ class ServerCaller
 
 
     /**
-     * Adjusts a merchant's wallet balance. IncreaseWallet collects the amount from the merchant (by EFT, or by Interac when requested) and credits the wallet; DecreaseWallet withdraws it from the wallet balance, subject to the risk-adjusted withdrawable balance. Requires the wallet feature to be enabled for the service.
+     * Adjusts a merchant's wallet balance. IncreaseWallet collects the amount from the merchant (by EFT, or by Interac when requested) and credits the wallet; DecreaseWallet withdraws it from the wallet balance, subject to the risk-adjusted withdrawable balance. Requires the wallet feature to be enabled for the service. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $serviceId
      * @param string $merchantId
      * @param float $amount
      * @param string $mode
      * @param bool $useInterac
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -616,12 +617,14 @@ class ServerCaller
         $merchantId,
         $amount,
         $mode,
-        $useInterac
+        $useInterac,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/AdjustWallet";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "ServiceId" => $serviceId,
             "MerchantId" => $merchantId,
             "Amount" => $amount,
@@ -1418,7 +1421,7 @@ class ServerCaller
 
 
     /**
-     * Creates the payment.
+     * Creates the payment. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $billId
      * @param bool $setPaymentCustomerFromBill
@@ -1441,6 +1444,7 @@ class ServerCaller
      * @param bool $askForCustomerConsent
      * @param string $merchantId
      * @param bool $immediateTransfer
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -1466,12 +1470,14 @@ class ServerCaller
         $autorizedPaymentMethod = null,
         $askForCustomerConsent = null,
         $merchantId = null,
-        $immediateTransfer = null
+        $immediateTransfer = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/CreatePayment";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "BillId" => $billId,
             "SetPaymentCustomerFromBill" => $setPaymentCustomerFromBill,
             "CustomerEmail" => $customerEmail,
@@ -1546,7 +1552,7 @@ class ServerCaller
 
 
     /**
-     * Creates the direct Interac transaction
+     * Creates the direct Interac transaction. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $merchantId
      * @param string $description
@@ -1562,6 +1568,7 @@ class ServerCaller
      * @param \DateTime $dueDate
      * @param string $currency
      * @param string $language
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -1580,12 +1587,14 @@ class ServerCaller
         $referenceNumber,
         $dueDate = null,
         $currency = null,
-        $language = null
+        $language = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/CreateDirectInteracTransaction";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "MerchantId" => $merchantId,
             "InteracInformation" => [
                 "Description" => $description,
@@ -1609,11 +1618,12 @@ class ServerCaller
 
 
     /**
-     * Creates the transaction from raw.
+     * Creates the transaction from raw. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $rawAcpFileContent
      * @param string $merchantId
      * @param bool $isImmediate
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -1621,12 +1631,14 @@ class ServerCaller
         $sessionToken,
         $rawAcpFileContent,
         $merchantId = null,
-        $isImmediate = null
+        $isImmediate = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/CreateTransactionFromRaw";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "RawAcpFileContent" => $rawAcpFileContent,
             "MerchantId" => $merchantId,
             "IsImmediate" => $isImmediate,
@@ -1680,20 +1692,23 @@ class ServerCaller
 
 
     /**
-     * Forces immediate processing of a transfer that would otherwise wait for the next scheduled run. For supplier transfers, only the paying merchant (fee-payer) can force-process; the recipient supplier cannot force-execute a transfer they did not create.
+     * Forces immediate processing of a transfer that would otherwise wait for the next scheduled run. For supplier transfers, only the paying merchant (fee-payer) can force-process; the recipient supplier cannot force-execute a transfer they did not create. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $paymentId
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
     public function forcePaymentProcess(
         $sessionToken,
-        $paymentId
+        $paymentId,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/ForcePaymentProcess";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "PaymentId" => $paymentId,
         ];
 
@@ -1760,7 +1775,7 @@ class ServerCaller
 
 
     /**
-     * Creates the free operation.
+     * Creates the free operation. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $paymentMethodId
      * @param string $transferType
@@ -1780,6 +1795,7 @@ class ServerCaller
      * @param \DateTime $recurringEndDate
      * @param bool $immediateTransfer
      * @param bool $stopSameIdentifications
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -1802,12 +1818,14 @@ class ServerCaller
         $transactionDueDate = null,
         $recurringEndDate = null,
         $immediateTransfer = null,
-        $stopSameIdentifications = null
+        $stopSameIdentifications = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/CreateFreeOperation";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "MerchantId" => $merchantId,
             "BillId" => $billId,
             "CustomerId" => $customerId,
@@ -1833,11 +1851,12 @@ class ServerCaller
 
 
     /**
-     * Creates a batch of free operations (deposits or collections) in a single call. Validates that client onboarding (KYC) is completed before allowing free deposit operations.
+     * Creates a batch of free operations (deposits or collections) in a single call. Validates that client onboarding (KYC) is completed before allowing free deposit operations. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param array $freeOperationBatchList
      * @param string $groupId
      * @param bool $stopSameIdentifications
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -1845,12 +1864,14 @@ class ServerCaller
         $sessionToken,
         $freeOperationBatchList,
         $groupId,
-        $stopSameIdentifications = null
+        $stopSameIdentifications = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/CreateFreeOperationBatch";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "FreeOperationBatchList" => $freeOperationBatchList,
             "GroupId" => $groupId,
             "StopSameIdentifications" => $stopSameIdentifications,
@@ -1861,20 +1882,23 @@ class ServerCaller
 
 
     /**
-     * Reverts (cancels or reverses) a transfer. For pending gateway payments, deletes the transfer and its public token. For processed payments, creates reversal operations for each non-fee operation. Rejects transfers over $5,000 or wallet-type transfers. For supplier transfers, only the paying merchant (fee-payer) can revert; the recipient supplier cannot revert a transfer they did not create.
+     * Reverts (cancels or reverses) a transfer. For pending gateway payments, deletes the transfer and its public token. For processed payments, creates reversal operations for each non-fee operation. Rejects transfers over $5,000 or wallet-type transfers. For supplier transfers, only the paying merchant (fee-payer) can revert; the recipient supplier cannot revert a transfer they did not create. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $transferId
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
     public function revertTransfer(
         $sessionToken,
-        $transferId
+        $transferId,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/RevertTransfer";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "TransferId" => $transferId,
         ];
 
@@ -1967,22 +1991,25 @@ class ServerCaller
 
 
     /**
-     * Relaunches (retries) a previously failed transfer for a merchant. Resets the failed payment in the database for reprocessing and sends an internal notification email with the transfer details.
+     * Relaunches (retries) a previously failed transfer for a merchant. Resets the failed payment in the database for reprocessing and sends an internal notification email with the transfer details. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $transferId
      * @param string $merchantId
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
     public function relaunchMerchantFailedTransfer(
         $sessionToken,
         $transferId,
-        $merchantId = null
+        $merchantId = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/RelaunchMerchantFailedTransfer";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "TransferId" => $transferId,
             "MerchantId" => $merchantId,
         ];
@@ -1992,7 +2019,7 @@ class ServerCaller
 
 
     /**
-     * Creates a payment transfer from the calling merchant to a supplier. Validates both merchants, runs business rules on the sending merchant's limits, creates the transfer as a free collection, and optionally creates a bill. Notifies the supplier unless client approval is required.
+     * Creates a payment transfer from the calling merchant to a supplier. Validates both merchants, runs business rules on the sending merchant's limits, creates the transfer as a free collection, and optionally creates a bill. Notifies the supplier unless client approval is required. This operation supports idempotency via the IdempotencyKey field.
      * @param string $sessionToken
      * @param string $merchantId
      * @param float $amount
@@ -2005,6 +2032,7 @@ class ServerCaller
      * @param string $billDescription
      * @param string $billTitle
      * @param \DateTime $recurringEndDate
+     * @param string $idempotencyKey
      *
      * @return mixed
      */
@@ -2020,12 +2048,14 @@ class ServerCaller
         $billNumber,
         $billDescription,
         $billTitle,
-        $recurringEndDate = null
+        $recurringEndDate = null,
+        $idempotencyKey = null
     ) {
         $methodName = "/Data/CreateSupplierTransfer";
 
         $data = [
             "SessionToken" => $sessionToken,
+            "IdempotencyKey" => $idempotencyKey,
             "MerchantId" => $merchantId,
             "Amount" => $amount,
             "TransferDueDate" => $transferDueDate,
@@ -2311,6 +2341,28 @@ class ServerCaller
             "ServiceId" => $serviceId,
             "From" => $from,
             "To" => $to,
+        ];
+
+        return $this->crypto()->performCall($methodName, $data);
+    }
+
+
+    /**
+     * Verifies the 2FA setup after user scans QR code and enters the code. Enables 2FA for the user once verification succeeds.
+     * @param string $sessionToken
+     * @param string $twoFactorCode
+     *
+     * @return mixed
+     */
+    public function verify2FASetup(
+        $sessionToken,
+        $twoFactorCode
+    ) {
+        $methodName = "/Data/Verify2FASetup";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "TwoFactorCode" => $twoFactorCode,
         ];
 
         return $this->crypto()->performCall($methodName, $data);
