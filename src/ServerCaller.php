@@ -2526,5 +2526,27 @@ class ServerCaller
     }
 
 
+    /**
+     * Lists the transfers of your services that are waiting to be approved or declined in the portal, the newest first. The list is not paged. A payment to a supplier is listed for the paying merchant and for the supplier; only the paying merchant can approve or decline it.
+     * @param string $sessionToken
+     * @param string $serviceId
+     *
+     * @return mixed
+     */
+    public function getPendingTransferApprovals(
+        $sessionToken,
+        $serviceId = null
+    ) {
+        $methodName = "/Data/GetPendingTransferApprovals";
+
+        $data = [
+            "SessionToken" => $sessionToken,
+            "ServiceId" => $serviceId,
+        ];
+
+        return $this->crypto()->performCall($methodName, $data);
+    }
+
+
    
 }
